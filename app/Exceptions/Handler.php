@@ -1,0 +1,74 @@
+<?php
+
+namespace App\Exceptions;
+
+use Throwable;
+
+use Illuminate\Http\Request;
+use App\Exceptions\CustomValidationException;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\InvalidArgumentException;
+
+class Handler extends ExceptionHandler
+{
+    protected $dontReport = [
+        //
+    ];
+    /**
+     * The list of the inputs that are never flashed to the session on validation exceptions.
+     *
+     * @var array<int, string>
+     */
+    protected $dontFlash = [
+        'current_password',
+        'password',
+        'password_confirmation',
+    ];
+
+    /**
+     * Register the exception handling callbacks for the application.
+     */
+    public function register(): void
+    {
+
+        $this->renderable(function (ValidationException $exception, $request) {
+            if (!$request->wantsJson()) {
+                return null; // Laravel handles as usual
+            }
+
+            throw CustomValidationException::withMessages(
+                $exception->validator->getMessageBag()->getMessages()
+            );
+        });
+        $this->renderable(function (InvalidOrderException $e, Request $request) {
+            return response()->view('errors.invalid-order', [], 500);
+        });
+        $this->renderable(function (NotFoundHttpException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'status'=> false,
+                    'message' => 'Record not found.',
+                    'code' => 404,
+                ], 404);
+            }
+        });
+        $this->renderable(function (GeneralJsonException $e) {
+            if (!request()->wantsJson()) {
+                return null; // Laravel handles as usual
+            }
+          return response()->json([
+            'status'=> false,
+            'message' => $e->getMessage(),
+            'code' => $e->getCode(),
+            ], $e->getCode());
+        });
+
+
+
+        //  $this->reportable(function (Throwable $e) {
+        //    //
+        // });
+    }
+}
