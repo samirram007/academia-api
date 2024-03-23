@@ -20,9 +20,11 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->boolean('is_active')->default(true);
-            $table->unsignedBigInteger('academic_year_id');
+            $table->unsignedBigInteger('academic_session_id');
+            $table->unsignedBigInteger('campus_id');
             $table->unsignedBigInteger('academic_class_id');
-            $table->foreign('academic_year_id')->references('id')->on('academic_years');
+            $table->foreign('campus_id')->references('id')->on('campuses');
+            $table->foreign('academic_session_id')->references('id')->on('academic_sessions');
             $table->foreign('academic_class_id')->references('id')->on('academic_classes');
             $table->timestamps();
         });

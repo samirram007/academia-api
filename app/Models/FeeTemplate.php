@@ -12,11 +12,16 @@ class FeeTemplate extends Model
     protected $fillable = [
         'name',
         'is_active',
-        'academic_year_id',
+        'campus_id',
+        'academic_session_id',
         'academic_class_id'
     ];
-    public function academic_year() {
-        return $this->belongsTo(AcademicYear::class);
+
+    public function campus() {
+        return $this->belongsTo(Campus::class);
+        }
+    public function academic_session() {
+        return $this->belongsTo(AcademicSession::class);
         }
         public function academic_class() {
         return $this->belongsTo(AcademicClass::class);

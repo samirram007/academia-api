@@ -26,7 +26,7 @@ class UpdateFeeRequest extends FormRequest
             'fee_date'=> ['sometimes','required', 'date'],
             'fee_template_id'=> ['sometimes','required', 'exists:fee_templates,id'],
             'student_id' =>  ['sometimes','required','number', 'exists:students,id'],
-            'academic_year_id'=> ['sometimes','required', 'exists:academic_years,id'],
+            'academic_session_id'=> ['sometimes','required', 'exists:academic_sessions,id'],
             'academic_class_id'=> ['sometimes','required', 'exists:academic_classes,id'],
             'total_amount'=> ['sometimes','required', 'numeric'],
             'paid_amount'=> ['sometimes','required', 'numeric'],

@@ -50,8 +50,8 @@ class DatabaseSeeder extends Seeder
             'school_id' => 1,
             'education_board_id'=>1
         ]);
-        \App\Models\AcademicYear::create([
-            'year' => '2023-2024',
+        \App\Models\AcademicSession::create([
+            'session' => '2023-2024',
             'start_date'=>'2023-01-01',
             'end_date'=>'2024-12-31',
             'campus_id'=>1,

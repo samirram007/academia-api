@@ -18,7 +18,7 @@ class SectionController extends Controller
     public function index(Request $request)
     {
 
-        return new SectionCollection(Section::paginate());
+        return new SectionCollection(Section::all());
     }
 
     /**

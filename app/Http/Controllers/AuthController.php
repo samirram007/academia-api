@@ -9,7 +9,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Resources\User\UserResource;
 use App\Http\Requests\Auth\SignupRequest;
 use App\Http\Resources\Auth\AuthUserResource;
-use App\Models\AcademicYear;
+use App\Models\AcademicSession;
 
 class AuthController extends Controller
 {
@@ -56,7 +56,7 @@ class AuthController extends Controller
     }
     public function user(){
 
-        $academic_year=AcademicYear::where('is_current',1)->first();
+        $academic_session=AcademicSession::where('is_current',1)->first();
 
         return new UserResource(Auth::user());
     }

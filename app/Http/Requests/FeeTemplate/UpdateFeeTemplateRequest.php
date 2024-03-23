@@ -24,7 +24,8 @@ class UpdateFeeTemplateRequest extends FormRequest
         return [
             'name' => ['required','string','max:255'],
             'is_active'=>'sometimes|boolean',
-            'academic_year_id'=>'required|exists:academic_years,id',
+            'campus_id'=>'required|exists:campuses,id',
+            'academic_session_id'=>'required|exists:academic_sessions,id',
             'academic_class_id'=>'required|exists:academic_classes,id'
         ];
     }

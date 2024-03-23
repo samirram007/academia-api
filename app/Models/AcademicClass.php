@@ -11,5 +11,19 @@ class AcademicClass extends Model
     use HasApiTokens,HasFactory;
     protected $fillable = [
         'name',
+        'code',
+        'campus_id',
+        'academic_standard_id',
+        'section_id',
+        'capacity'
     ];
+    public function academic_standard(){
+        return $this->belongsTo(AcademicStandard::class);
+    }
+    public function campus(){
+        return $this->belongsTo(Campus::class);
+    }
+    public function section(){
+        return $this->belongsTo(Section::class);
+    }
 }

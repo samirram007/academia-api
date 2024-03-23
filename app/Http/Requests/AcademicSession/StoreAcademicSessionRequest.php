@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\AcademicYear;
+namespace App\Http\Requests\AcademicSession;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateAcademicYearRequest extends FormRequest
+class StoreAcademicSessionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,12 +24,16 @@ class UpdateAcademicYearRequest extends FormRequest
     {
         return [
             'campus_id' => ['required', 'numeric', 'exists:campuses,id'],
-            'year' => ['sometimes', 'required'],
-            'start_date' => ['sometimes', 'nullable', 'date'],
+            'session' => [
+                'required',
+                Rule::unique('academic_sessions', 'session')->where('campus_id', $this->input('campus_id'))
+            ],
+            'start_date' => ['required', 'date'],
             'end_date' => ['sometimes', 'nullable', 'date', 'after:start_date'],
-            'previous_academic_year_id' => ['sometimes', 'nullable', 'numeric', 'exists:academic_years,id'],
-            'next_academic_year_id' => ['sometimes', 'nullable', 'numeric', 'exists:academic_years,id'],
+            'previous_academic_session_id' => ['sometimes', 'nullable', 'numeric', 'exists:academic_sessions,id'],
+            'next_academic_session_id' => ['sometimes', 'nullable', 'numeric', 'exists:academic_sessions,id'],
             'is_current' => ['sometimes', 'nullable', 'boolean'],
+
         ];
     }
 }

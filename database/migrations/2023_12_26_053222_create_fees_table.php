@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('fee_date');
             $table->unsignedBigInteger('fee_template_id');
             $table->unsignedBigInteger('student_id');
-            $table->unsignedBigInteger('academic_year_id');
+            $table->unsignedBigInteger('academic_session_id');
             $table->unsignedBigInteger('academic_class_id');
             $table->decimal('total_amount', 10, 2)->default(0);
             $table->decimal('paid_amount', 10, 2)->nullable();
@@ -64,7 +64,7 @@ return new class extends Migration
             $table->unsignedBigInteger('fee_id');
             $table->unsignedBigInteger('fee_receipt_id');
             $table->foreign('fee_id')->references('id')->on('fees');
-            $table->foreign('fee_receipt_id')->references('id')->on('fee_receipts');
+            // $table->foreign('fee_receipt_id')->references('id')->on('fee_receipts');
             $table->timestamps();
         });
     }

@@ -2,10 +2,11 @@
 
 namespace App\Http\Resources\FeeTemplate;
 
-use App\Http\Resources\AcademicClass\AcademicClassResource;
-use App\Http\Resources\AcademicYear\AcademicYearResource;
-use App\Http\Resources\SuccessResource;
 use Illuminate\Http\Request;
+use App\Http\Resources\SuccessResource;
+use App\Http\Resources\Campus\CampusResource;
+use App\Http\Resources\AcademicSession\AcademicSessionResource;
+use App\Http\Resources\AcademicClass\AcademicClassResource;
 
 
 class FeeTemplateResource extends SuccessResource
@@ -21,9 +22,11 @@ class FeeTemplateResource extends SuccessResource
             'id' => $this->id,
             'name' => $this->name,
             'is_active'=>$this->is_active,
+            'campus_id'=>$this->campus_id,
             'academic_class_id'=>$this->academic_class_id,
-            'academic_year_id'=>$this->academic_year_id,
-            'academic_year'=> new AcademicYearResource($this->whenLoaded('academic_year')),
+            'academic_session_id'=>$this->academic_session_id,
+            'campus'=>new CampusResource($this->whenLoaded('campus')),
+            'academic_session'=> new AcademicSessionResource($this->whenLoaded('academic_session')),
             'academic_class'=>new AcademicClassResource($this->whenLoaded('academic_class')),
             'fee_template_details'=>new FeeTemplateCollection($this->fee_template_details),
 

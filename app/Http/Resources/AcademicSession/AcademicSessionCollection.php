@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\AcademicYear;
+namespace App\Http\Resources\AcademicSession;
 
 use App\Http\Resources\SuccessCollection;
 use Illuminate\Http\Request;
 
-class AcademicYearCollection extends SuccessCollection
+class AcademicSessionCollection extends SuccessCollection
 {
     /**
      * Transform the resource collection into an array.

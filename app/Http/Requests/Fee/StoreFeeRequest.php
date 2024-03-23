@@ -26,7 +26,7 @@ class StoreFeeRequest extends FormRequest
             'fee_date'=> ['required', 'date'],
             'fee_template_id'=> ['required', 'exists:fee_templates,id'],
             'student_id' =>  ['required','number', 'exists:students,id'],
-            'academic_year_id'=> ['required', 'exists:academic_years,id'],
+            'academic_session_id'=> ['required', 'exists:academic_sessions,id'],
             'academic_class_id'=> ['required', 'exists:academic_classes,id'],
             'total_amount'=> ['required', 'numeric'],
             'paid_amount'=> ['sometimes','required', 'numeric'],

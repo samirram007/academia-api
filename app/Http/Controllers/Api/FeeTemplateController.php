@@ -15,13 +15,14 @@ class FeeTemplateController extends Controller
     /**
      * Display a listing of the resource.
      */
-    protected $userLoader=['academic_year','academic_class'];
+    protected $userLoader=['campus','academic_session','academic_class'];
 
     public function index(Request $request)
     {
         $message=[];
-        if(!$request->has('academic_year_id')){
-           array_push($message,'Please provide academic Year');
+
+        if(!$request->has('academic_session_id')){
+           array_push($message,'Please provide academic session');
         }
         if(!$request->has('academic_class_id')){
             array_push($message,'Please provide academic Class');
@@ -36,7 +37,7 @@ class FeeTemplateController extends Controller
         }
         return new FeeTemplateCollection(
             FeeTemplate::with($this->userLoader)
-            ->where('academic_year_id',$request->input('academic_year_id'))
+            ->where('academic_session_id',$request->input('academic_session_id'))
             ->where('academic_class_id',$request->input('academic_class_id'))
             ->get());
     }

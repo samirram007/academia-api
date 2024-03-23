@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class AcademicYearSeeder extends Seeder
+class AcademicSessionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,6 +13,6 @@ class AcademicYearSeeder extends Seeder
     public function run(): void
     {
 
-        $academicYear = \App\Models\AcademicYear::factory(5)->create();
+        $academicSession = \App\Models\AcademicSession::factory(5)->create();
     }
 }

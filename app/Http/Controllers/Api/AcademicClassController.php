@@ -12,22 +12,26 @@ use Illuminate\Http\Request;
 
 class AcademicClassController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $userLoader=['campus','academic_standard','section'];
     public function index(Request $request)
     {
+        $message=[];
+
+
         if(!$request->has('campus_id')){
+            array_push($message,'Please provide campus_id');
+        }
+        if($message){
             return response()->json(
-            [
-                'status'=>false,
-                'message' => 'Please provide campus_id'
+                [
+                   'status'=>false,
+                   'message' => $message
                 ]
-            , 400);
+           , 400);
         }
         return new AcademicClassCollection(
-            AcademicClass
-            ::where('campus_id',$request->input('campus_id'))
+            AcademicClass::with($this->userLoader)
+            ->where('campus_id',$request->input('campus_id'))
             ->get());
     }
 

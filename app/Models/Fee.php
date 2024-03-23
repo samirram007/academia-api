@@ -14,7 +14,7 @@ class Fee extends Model
         'fee_date',
         'fee_template_id',
         'student_id',
-        'academic_year_id',
+        'academic_session_id',
         'academic_class_id',
         'total_amount',
         'paid_amount',
@@ -32,8 +32,8 @@ class Fee extends Model
     public function student() {
         return $this->belongsTo(User::class,'student_id');
     }
-    public function academic_year() {
-        return $this->belongsTo(AcademicYear::class);
+    public function academic_session() {
+        return $this->belongsTo(Academicsession::class);
     }
     public function academic_class() {
         return $this->belongsTo(AcademicClass::class);

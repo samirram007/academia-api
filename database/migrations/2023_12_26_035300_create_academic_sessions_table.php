@@ -12,14 +12,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('academic_years', function (Blueprint $table) {
+        Schema::create('academic_sessions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Campus::class)->default(1);
-            $table->string('year');
+            $table->string('session');
             $table->date('start_date');
             $table->date('end_date');
-            $table->bigInteger('previous_academic_year_id')->nullable();
-            $table->bigInteger('next_academic_year_id')->nullable();
+            $table->bigInteger('previous_academic_session_id')->nullable();
+            $table->bigInteger('next_academic_session_id')->nullable();
             $table->boolean('is_current')->default(false);
             $table->timestamps();
         });
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('academic_years');
+        Schema::dropIfExists('academic_sessions');
     }
 };
