@@ -90,6 +90,7 @@ class User extends Authenticatable
         'user_type'=>UserTypeEnum::class,
         'status'=>UserStatusEnum::class,
     ];
+    //Hello World......
 public function profile_document(){
     return $this->belongsTo(Document::class,'profile_document_id');
 }

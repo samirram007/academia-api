@@ -29,7 +29,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->require();
             $table->string('code')->nullable();
-            $table->text('description');
+            $table->text('description')->nullable();;
 
             $table->timestamps();
         });

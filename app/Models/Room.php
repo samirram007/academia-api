@@ -11,5 +11,13 @@ class Room extends Model
     use HasApiTokens,HasFactory;
     protected $fillable = [
         'name',
+        'code',
+        'floor_id',
+        'is_available',
+        'capacity',
+        'room_type'
     ];
+    public function floor() {
+        return $this->belongsTo(Floor::class);
+     }
 }

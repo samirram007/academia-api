@@ -24,7 +24,7 @@ class UpdateCampusRequest extends FormRequest
         return [
             'name' => ['sometimes', 'max:255', 'unique:campuses,name,' . $this->route('campus')->id],
             'code' => ['sometimes', 'nullable', 'max:255', 'unique:campuses,code,' . $this->route('campus')->id],
-            'address_id' => ['sometimes', 'nullable', 'numeric'],
+            'address_id' => ['sometimes', 'nullable', 'numeric', 'exists:addresses,id'],
             'school_id' => ['sometimes', 'nullable', 'numeric', 'exists:schools,id'],
             'education_board_id' => ['sometimes', 'nullable', 'numeric', 'exists:education_boards,id'],
             'contact_no' => ['sometimes', 'nullable', 'string', 'max:10'],
@@ -32,7 +32,7 @@ class UpdateCampusRequest extends FormRequest
             'establishment_date' => ['sometimes', 'nullable', 'date'],
             'opening_time' => ['sometimes', 'nullable', 'date_format:H:i:s'],
             'closing_time' => ['sometimes', 'nullable', 'date_format:H:i:s'],
-            'logo_image_id' => ['sometimes', 'nullable', 'numeric', 'exists:documents,id'],
+            'logo_image_id' => ['sometimes', 'numeric', 'exists:documents,id'],
         ];
     }
 }

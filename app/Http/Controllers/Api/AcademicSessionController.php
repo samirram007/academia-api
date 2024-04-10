@@ -15,7 +15,7 @@ class AcademicSessionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    protected $userLoader=['campus'];
+    protected $userLoader=['campus','previous_academic_session','next_academic_session'];
     public function index(Request $request)
     {
         $message=[];
@@ -45,7 +45,7 @@ class AcademicSessionController extends Controller
     {
         $data = $request->validated();
         $academicSession = AcademicSession::create($data);
-        return new AcademicSessionResource($academicSession);
+        return new AcademicSessionResource($academicSession->load($this->userLoader));
     }
 
     /**
@@ -53,7 +53,7 @@ class AcademicSessionController extends Controller
      */
     public function show(AcademicSession $academicSession)
     {
-        return new AcademicSessionResource($academicSession);
+        return new AcademicSessionResource($academicSession->load($this->userLoader));
     }
 
     /**
@@ -63,7 +63,7 @@ class AcademicSessionController extends Controller
     {
         $data = $request->validated();
         $academicSession->update($data);
-        return new AcademicSessionResource($academicSession);
+        return new AcademicSessionResource($academicSession->load($this->userLoader));
     }
 
     /**

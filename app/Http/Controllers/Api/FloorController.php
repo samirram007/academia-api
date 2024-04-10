@@ -12,13 +12,27 @@ use Illuminate\Http\Request;
 
 class FloorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $userLoader=['building','building.campus'];
     public function index(Request $request)
     {
+        $message=[];
 
-        return new FloorCollection(Floor::paginate());
+
+        if(!$request->has('building_id')){
+            array_push($message,'Please provide building_id');
+        }
+        if($message){
+            return response()->json(
+                [
+                   'status'=>false,
+                   'message' => $message
+                ]
+           , 400);
+        }
+        return new FloorCollection(Floor::with($this->userLoader)
+        ->where('building_id',$request->input('building_id'))
+        ->get());
+
     }
 
     /**
@@ -28,7 +42,7 @@ class FloorController extends Controller
     {
         $data = $request->validated();
         $floor = Floor::create($data);
-        return new FloorResource($floor);
+        return new FloorResource($floor->load($this->userLoader));
     }
 
     /**
@@ -37,7 +51,7 @@ class FloorController extends Controller
     public function show(Floor $floor)
     {
 
-        return new FloorResource($floor);
+        return new FloorResource($floor->load($this->userLoader));
     }
 
     /**
@@ -47,7 +61,7 @@ class FloorController extends Controller
     {
         $data = $request->validated();
         $floor->update($data);
-        return new FloorResource($floor);
+        return new FloorResource($floor->load($this->userLoader));
     }
 
     /**

@@ -25,9 +25,9 @@ class FeeTemplateResource extends SuccessResource
             'campus_id'=>$this->campus_id,
             'academic_class_id'=>$this->academic_class_id,
             'academic_session_id'=>$this->academic_session_id,
-            'campus'=>new CampusResource($this->whenLoaded('campus')),
             'academic_session'=> new AcademicSessionResource($this->whenLoaded('academic_session')),
             'academic_class'=>new AcademicClassResource($this->whenLoaded('academic_class')),
+            'campus'=>new CampusResource($this->whenLoaded('campus')),
             'fee_template_details'=>new FeeTemplateCollection($this->fee_template_details),
 
 

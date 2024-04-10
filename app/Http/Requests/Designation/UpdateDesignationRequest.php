@@ -23,7 +23,7 @@ class UpdateDesignationRequest extends FormRequest
     {
         return [
             'name' => ['sometimes', 'string', 'max:255',
-                'unique:departments,name,' . $this->route('department')->id],
+                'unique:designations,name,' . $this->route('designation')->id],
         ];
     }
 }

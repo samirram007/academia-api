@@ -11,5 +11,6 @@ class Section extends Model
     use HasApiTokens,HasFactory;
     protected $fillable = [
         'name',
+        'code'
     ];
 }

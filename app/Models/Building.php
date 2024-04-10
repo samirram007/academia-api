@@ -11,5 +11,11 @@ class Building extends Model
     use HasApiTokens,HasFactory;
     protected $fillable = [
         'name',
+        'code',
+        'campus_id',
+        'capacity'
     ];
+    public function campus() {
+        return $this->belongsTo(Campus::class);
+     }
 }

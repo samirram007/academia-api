@@ -23,6 +23,8 @@ class AcademicSessionResource extends SuccessResource
             'end_date' => $this->whenNotNull($this->end_date),
             'previous_academic_session_id' => $this->whenNotNull($this->previous_academic_session_id),
             'next_academic_session_id' => $this->whenNotNull($this->next_academic_session_id),
+            "previous_academic_session"=>new AcademicSessionResource($this->whenLoaded('previous_academic_session')),
+            "next_academic_session"=>new AcademicSessionResource($this->whenLoaded('next_academic_session')),
             'is_current' => $this->whenNotNull($this->is_current),
             'campus'=>new CampusResource($this->whenLoaded('campus')),
         ];

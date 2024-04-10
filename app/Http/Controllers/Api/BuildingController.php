@@ -12,13 +12,26 @@ use Illuminate\Http\Request;
 
 class BuildingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $userLoader=['campus'];
     public function index(Request $request)
     {
+        $message=[];
 
-        return new BuildingCollection(Building::paginate());
+
+        if(!$request->has('campus_id')){
+            array_push($message,'Please provide campus_id');
+        }
+        if($message){
+            return response()->json(
+                [
+                   'status'=>false,
+                   'message' => $message
+                ]
+           , 400);
+        }
+        return new BuildingCollection(Building::with($this->userLoader)
+        ->where('campus_id',$request->input('campus_id'))
+        ->get());
     }
 
     /**
@@ -28,7 +41,7 @@ class BuildingController extends Controller
     {
         $data = $request->validated();
         $building = Building::create($data);
-        return new BuildingResource($building);
+        return new BuildingResource($building->load($this->userLoader));
     }
 
     /**
@@ -37,7 +50,7 @@ class BuildingController extends Controller
     public function show(Building $building)
     {
 
-        return new BuildingResource($building);
+        return new BuildingResource($building->load($this->userLoader));
     }
 
     /**
@@ -47,7 +60,7 @@ class BuildingController extends Controller
     {
         $data = $request->validated();
         $building->update($data);
-        return new BuildingResource($building);
+        return new BuildingResource($building->load($this->userLoader));
     }
 
     /**

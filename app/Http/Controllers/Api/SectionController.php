@@ -26,6 +26,7 @@ class SectionController extends Controller
      */
     public function store(StoreSectionRequest $request)
     {
+
         $data = $request->validated();
         $section = Section::create($data);
         return new SectionResource($section);
@@ -45,6 +46,7 @@ class SectionController extends Controller
      */
     public function update(UpdateSectionRequest $request, Section $section)
     {
+
         $data = $request->validated();
         $section->update($data);
         return new SectionResource($section);

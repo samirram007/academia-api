@@ -12,13 +12,27 @@ use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $userLoader=['floor','floor.building','floor.building.campus'];
     public function index(Request $request)
     {
+        $message=[];
 
-        return new RoomCollection(Room::paginate());
+
+        if(!$request->has('floor_id')){
+            array_push($message,'Please provide floor_id');
+        }
+        if($message){
+            return response()->json(
+                [
+                   'status'=>false,
+                   'message' => $message
+                ]
+           , 400);
+        }
+        return new RoomCollection(Room::with($this->userLoader)
+        ->where('floor_id',$request->input('floor_id'))
+        ->get());
+
     }
 
     /**
@@ -26,9 +40,11 @@ class RoomController extends Controller
      */
     public function store(StoreRoomRequest $request)
     {
+
         $data = $request->validated();
         $room = Room::create($data);
-        return new RoomResource($room);
+       // dd($room);
+        return new RoomResource($room->load($this->userLoader));
     }
 
     /**
@@ -37,7 +53,7 @@ class RoomController extends Controller
     public function show(Room $room)
     {
 
-        return new RoomResource($room);
+        return new RoomResource($room->load($this->userLoader));
     }
 
     /**
@@ -47,7 +63,7 @@ class RoomController extends Controller
     {
         $data = $request->validated();
         $room->update($data);
-        return new RoomResource($room);
+        return new RoomResource($room->load($this->userLoader));
     }
 
     /**

@@ -12,13 +12,12 @@ use Illuminate\Http\Request;
 
 class SchoolController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $userLoader=['address','logo_image','school_type','education_board' ];
     public function index(Request $request)
     {
 
-        return new SchoolCollection(School::paginate());
+        return new SchoolCollection(School::with($this->userLoader)
+        ->get());
     }
 
     /**
@@ -37,7 +36,7 @@ class SchoolController extends Controller
     public function show(School $school)
     {
 
-        return new SchoolResource($school);
+        return new SchoolResource($school->load($this->userLoader));
     }
 
     /**

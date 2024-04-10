@@ -17,6 +17,13 @@ class EducationBoard extends Model
         'email',
         'website',
         'establishment_date',
-        'logo_image',
+        'logo_image_id',
     ];
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
+    }
+    public function logo_image(){
+        return $this->belongsTo(Document::class,'logo_image_id');
+    }
 }

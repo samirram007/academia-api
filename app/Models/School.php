@@ -24,6 +24,7 @@ class School extends Model
         'website',
         'establishment_date',
         'logo_image_id',
+        'school_type_id',
 
     ];
     public function education_board()

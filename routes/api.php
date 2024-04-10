@@ -13,15 +13,16 @@ use App\Http\Controllers\Api\SchoolController;
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\FeeHeadController;
 use App\Http\Controllers\Api\SectionController;
+use App\Http\Controllers\Api\SubjectController;
 use App\Http\Controllers\Api\BuildingController;
 use App\Http\Controllers\Api\DocumentController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\SchoolTypeController;
 use App\Http\Controllers\Api\DesignationController;
 use App\Http\Controllers\Api\FeeTemplateController;
-use App\Http\Controllers\Api\AcademicSessionController;
 use App\Http\Controllers\Api\AcademicClassController;
 use App\Http\Controllers\Api\EducationBoardController;
+use App\Http\Controllers\Api\AcademicSessionController;
 use App\Http\Controllers\Api\AcademicStandardController;
 
 Route::post('register',[AuthController::class,'register']);
@@ -54,6 +55,7 @@ Route::apiResource('departments', DepartmentController::class);
 Route::apiResource('designations', DesignationController::class);
 Route::apiResource('education_boards', EducationBoardController::class);
 Route::apiResource('sections', SectionController::class);
+Route::apiResource('subjects', SubjectController::class);
 
 Route::apiResource('fee_heads', FeeHeadController::class);
 Route::apiResource('fee_templates', FeeTemplateController::class);

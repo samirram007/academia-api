@@ -12,13 +12,12 @@ use Illuminate\Http\Request;
 
 class CampusController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $userLoader=['address','logo_image','school','education_board' ];
     public function index(Request $request)
     {
-        $campus = Campus::with(['address','school','education_board'])->get();
-        return new CampusCollection($campus);
+
+        return new CampusCollection(Campus::with($this->userLoader)
+        ->get());
     }
 
     /**
@@ -29,7 +28,7 @@ class CampusController extends Controller
 
         $data = $request->validated();
         $campus = Campus::create($data);
-        return new CampusResource($campus);
+        return new CampusResource($campus->load($this->userLoader));
     }
 
     /**
@@ -38,7 +37,7 @@ class CampusController extends Controller
     public function show(Campus $campus)
     {
 
-        return new CampusResource($campus);
+        return new CampusResource($campus->load($this->userLoader));
     }
 
     /**
@@ -48,7 +47,7 @@ class CampusController extends Controller
     {
         $data = $request->validated();
         $campus->update($data);
-        return new CampusResource($campus);
+        return new CampusResource($campus->load($this->userLoader));
     }
 
     /**

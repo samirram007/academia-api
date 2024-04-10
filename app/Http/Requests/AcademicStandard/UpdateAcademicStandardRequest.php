@@ -22,9 +22,9 @@ class UpdateAcademicStandardRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|required|string|max:255',
-            'code' => 'sometimes|required|string|max:255',
-            'description' => 'sometimes|required|string|max:255',
+            'name' => ['sometimes', 'string','max:255'],
+            'code' => ['sometimes', 'string','max:20'],
+            'description'=>['sometimes','string']
 
         ];
     }

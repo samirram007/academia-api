@@ -12,13 +12,14 @@ use Illuminate\Http\Request;
 
 class EducationBoardController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $userLoader=['address','logo_image' ];
     public function index(Request $request)
     {
 
-        return new EducationBoardCollection(EducationBoard::paginate());
+
+        return new EducationBoardCollection(
+            EducationBoard::with($this->userLoader)
+            ->get());
     }
 
     /**
@@ -37,7 +38,7 @@ class EducationBoardController extends Controller
     public function show(EducationBoard $educationBoard)
     {
 
-        return new EducationBoardResource($educationBoard);
+        return new EducationBoardResource($educationBoard->load($this->userLoader));
     }
 
     /**

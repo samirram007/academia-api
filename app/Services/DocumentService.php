@@ -43,8 +43,7 @@ class DocumentService
                     $uuid = (string) Str::uuid();
                     $name = $uuid.'.'.$file->getClientOriginalExtension();
                     $path = $file->storeAs('documents/'.$userId.'/'.$file->getClientOriginalExtension(), $name, 'public');
-                    // dd($path);
-                    // $file->storeAs($path, $name, 'public');
+
 
                     $document = new Document([
                         'user_id' => $userId,

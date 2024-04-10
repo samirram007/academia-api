@@ -11,5 +11,7 @@ class AcademicStandard extends Model
     use HasApiTokens,HasFactory;
     protected $fillable = [
         'name',
+        'code',
+        'description'
     ];
 }

@@ -2,10 +2,10 @@
 
 namespace App\Http\Resources\Subject;
 
+use App\Http\Resources\SuccessCollection;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class SubjectCollection extends ResourceCollection
+class SubjectCollection extends SuccessCollection
 {
     /**
      * Transform the resource collection into an array.
