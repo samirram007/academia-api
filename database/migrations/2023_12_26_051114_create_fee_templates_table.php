@@ -30,7 +30,7 @@ return new class extends Migration
         });
         Schema::create('fee_template_details', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('name');
             $table->boolean('is_active')->default(true);
             $table->integer('sort_index')->default(1);
             $table->unsignedBigInteger('fee_template_id');
@@ -40,6 +40,8 @@ return new class extends Migration
             $table->boolean('keep_periodic_details')->default(false);
             $table->foreign('fee_template_id')->references('id')->on('fee_templates');
             $table->foreign('fee_head_id')->references('id')->on('fee_heads');
+            $table->unique(["fee_head_id", "fee_template_id"], 'fee_head_fee_template_unique');
+            $table->unique(["name", "fee_template_id"], 'name_fee_template_unique');
             $table->timestamps();
         });
     }
@@ -49,6 +51,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('fee_template_details', function (Blueprint $table) {
+            $table->dropUnique('fee_head_fee_template_unique');
+            $table->dropUnique('name_fee_template_unique');
+          });
         Schema::dropIfExists('fee_template_details');
         Schema::dropIfExists('fee_templates');
         Schema::dropIfExists('fee_heads');

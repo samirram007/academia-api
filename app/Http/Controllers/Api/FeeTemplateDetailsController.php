@@ -12,13 +12,31 @@ use Illuminate\Http\Request;
 
 class FeeTemplateDetailsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected $userLoader=['fee_head'];
+
+    public function index(Request $request)
     {
-        return new FeeTemplateDetailsCollection(FeeTemplateDetails::paginate());
+
+        $message=[];
+
+        if(!$request->has('fee_template_id')){
+           array_push($message,'Please provide fee template');
+        }
+
+        if($message){
+            return response()->json(
+                [
+                   'status'=>false,
+                   'message' => $message
+                ]
+           , 400);
+        }
+        return new FeeTemplateDetailsCollection(
+            FeeTemplateDetails::with($this->userLoader)
+            ->where('fee_template_id',$request->input('fee_template_id'))
+            ->get());
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -26,26 +44,32 @@ class FeeTemplateDetailsController extends Controller
     public function store(StoreFeeTemplateDetailsRequest $request)
     {
         $data = $request->validated();
+
         $fee_template_details = FeeTemplateDetails::create($data);
-        return new FeeTemplateDetailsResource($fee_template_details);
+        return new FeeTemplateDetailsResource($fee_template_details->load($this->userLoader));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(FeeTemplateDetails $fee_template_details)
+    public function show($id)
     {
-        return new FeeTemplateDetailsResource($fee_template_details);
+
+        $fee_template_details= FeeTemplateDetails::find($id);
+        return new FeeTemplateDetailsResource($fee_template_details->load($this->userLoader));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateFeeTemplateDetailsRequest $request, FeeTemplateDetails $fee_template_details)
+
+    public function update(UpdateFeeTemplateDetailsRequest $request, $id)
     {
+
         $data = $request->validated();
+        $fee_template_details= FeeTemplateDetails::find($id);
         $fee_template_details->update($data);
-        return new FeeTemplateDetailsResource($fee_template_details);
+        return new FeeTemplateDetailsResource($fee_template_details->load($this->userLoader));
     }
 
     /**

@@ -17,7 +17,7 @@ class FeeHeadController extends Controller
      */
     public function index()
     {
-        return new FeeHeadCollection(FeeHead::paginate());
+        return new FeeHeadCollection(FeeHead::all());
     }
 
     /**

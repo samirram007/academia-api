@@ -2,10 +2,11 @@
 
 namespace App\Http\Resources\FeeTemplateDetails;
 
+use App\Http\Resources\SuccessCollection;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class FeeTemplateDetailsCollection extends ResourceCollection
+
+class FeeTemplateDetailsCollection extends SuccessCollection
 {
     /**
      * Transform the resource collection into an array.

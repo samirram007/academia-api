@@ -24,6 +24,7 @@ use App\Http\Controllers\Api\AcademicClassController;
 use App\Http\Controllers\Api\EducationBoardController;
 use App\Http\Controllers\Api\AcademicSessionController;
 use App\Http\Controllers\Api\AcademicStandardController;
+use App\Http\Controllers\Api\FeeTemplateDetailsController;
 
 Route::post('register',[AuthController::class,'register']);
 Route::post('login',[AuthController::class,'login']);
@@ -59,6 +60,7 @@ Route::apiResource('subjects', SubjectController::class);
 
 Route::apiResource('fee_heads', FeeHeadController::class);
 Route::apiResource('fee_templates', FeeTemplateController::class);
+Route::apiResource('fee_template_details', FeeTemplateDetailsController::class);
 Route::apiResource('fees', FeeController::class);
 
 });

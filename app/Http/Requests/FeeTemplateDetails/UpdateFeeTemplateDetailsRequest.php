@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\FeeTemplateDetails;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateFeeTemplateDetailsRequest extends FormRequest
@@ -11,7 +12,7 @@ class UpdateFeeTemplateDetailsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,14 @@ class UpdateFeeTemplateDetailsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['sometimes','required','string','max:255'],
+            'is_active'=>'sometimes|boolean',
+            'sort_index'=>'required|integer',
+            'fee_template_id'=>'required|exists:fee_templates,id',
+            'fee_head_id'=>'required|exists:fee_heads,id',
+            'amount'=>'required|numeric',
+            'is_customizable'=>'sometimes|required|boolean',
+            'keep_periodic_details'=>'sometimes|required|boolean',
         ];
     }
 }

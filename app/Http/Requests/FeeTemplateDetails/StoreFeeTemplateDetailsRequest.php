@@ -30,8 +30,6 @@ class StoreFeeTemplateDetailsRequest extends FormRequest
             'amount'=>'required|numeric',
             'is_customizable'=>'sometimes|required|boolean',
             'keep_periodic_details'=>'sometimes|required|boolean',
-            'fee_template_id'=>'required|exists:fee_templates,id',
-            'fee_head_id'=>'required|exists:fee_heads,id',
         ];
     }
 }

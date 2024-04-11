@@ -19,6 +19,7 @@ class FeeTemplateController extends Controller
 
     public function index(Request $request)
     {
+
         $message=[];
 
         if(!$request->has('academic_session_id')){
@@ -35,11 +36,14 @@ class FeeTemplateController extends Controller
                 ]
            , 400);
         }
-        return new FeeTemplateCollection(
+
+        $thisData= new FeeTemplateCollection(
             FeeTemplate::with($this->userLoader)
             ->where('academic_session_id',$request->input('academic_session_id'))
             ->where('academic_class_id',$request->input('academic_class_id'))
             ->get());
+
+            return  $thisData;
     }
 
     /**
