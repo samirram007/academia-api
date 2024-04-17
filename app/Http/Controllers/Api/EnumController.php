@@ -10,6 +10,7 @@ use App\Enums\LanguageEnum;
 use App\Enums\NationalityEnum;
 use App\Enums\ReligionEnum;
 use App\Enums\RoomTypeEnum;
+use App\Enums\SubjectTypeEnum;
 use App\Enums\UserStatusEnum;
 use App\Enums\UserTypeEnum;
 use App\Http\Controllers\Controller;
@@ -43,6 +44,10 @@ class EnumController extends Controller
     public function guardian_type()
     {
         return response()->json(['data' => GuardianTypeEnum::dataLabels()]);
+    }
+    public function subject_type()
+    {
+        return response()->json(['data' => SubjectTypeEnum::dataLabels()]);
     }
     public function room_type()
     {

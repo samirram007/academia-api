@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Subject;
 
+use App\Enums\SubjectTypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateSubjectRequest extends FormRequest
 {
@@ -22,9 +24,14 @@ class UpdateSubjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['sometimes', 'string','max:255'],
-            'code' => ['sometimes', 'string','max:20'],
-            'description'=>['sometimes','string']
+            'name' => ['required','string','max:255'],
+            'code' => ['sometimes','string','max:20'],
+            'description'=>['sometimes','nullable','string'],
+            'subject_type' =>  ['sometimes','required',Rule::in(SubjectTypeEnum::cases())],
+            'subject_group_id' => ['sometimes','required','exists:subject_groups,id'],
+            'academic_standard_id' => ['sometimes','required','exists:academic_standards,id'],
+            'logo_image_id' => ['sometimes','nullable','exists:documents,id'],
+            'is_active' => ['sometimes','boolean'],
         ];
     }
 }

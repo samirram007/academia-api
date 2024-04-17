@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('months', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->unique();
+            $table->string('short_name')->unique();
+            $table->integer('number')->default(1)->unique();
+            $table->integer('no_of_days')->default(30);
+            $table->boolean('is_february')->default(false);
             $table->timestamps();
         });
     }

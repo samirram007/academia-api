@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\SubjectTypeEnum;
 use App\Models\Book;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -25,12 +26,24 @@ return new class extends Migration
             $table->string('code')->nullable();
             $table->timestamps();
         });
+        Schema::create('subject_groups', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->require();
+            $table->string('code')->nullable();
+            $table->text('description')->nullable();
+            $table->unsignedBigInteger('logo_image_id')->nullable();
+            $table->timestamps();
+        });
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
             $table->string('name')->require();
             $table->string('code')->nullable();
-            $table->text('description')->nullable();;
-
+            $table->enum('subject_type',array_keys(SubjectTypeEnum::labels()))->default(SubjectTypeEnum::default());
+            $table->foreignId('subject_group_id')->constrained();
+            $table->foreignId('academic_standard_id')->constrained();
+            $table->text('description')->nullable();
+            $table->unsignedBigInteger('logo_image_id')->nullable();
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
         Schema::create('books', function (Blueprint $table) {
@@ -38,7 +51,6 @@ return new class extends Migration
             $table->string('name')->require();
             $table->string('code')->nullable();
             $table->text('description');
-            $table->foreignId('academic_standard_id')->constrained();
             $table->foreignId('subject_id')->constrained();
             $table->year('publication_year')->nullable();
             $table->integer('page_count')->default(10);
@@ -48,6 +60,7 @@ return new class extends Migration
             $table->string('author')->nullable();
             $table->string('illustrator')->nullable();
             $table->string('translator')->nullable();
+            $table->unsignedBigInteger('cover_image_id')->nullable();
 
             $table->timestamps();
         });

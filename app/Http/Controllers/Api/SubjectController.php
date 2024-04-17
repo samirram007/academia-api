@@ -12,13 +12,28 @@ use Illuminate\Http\Request;
 
 class SubjectController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $userLoader=['academic_standard','subject_group','logo_image'];
     public function index(Request $request)
     {
-
-        return new SubjectCollection(Subject::all());
+        $message=[];
+        if(!$request->has('academic_standard_id')){
+            array_push($message,'Please provide academic_standard_id');
+        }
+        if(!$request->has('subject_group_id')){
+            array_push($message,'Please provide subject_group_id');
+        }
+        if($message){
+            return response()->json(
+                [
+                   'status'=>false,
+                   'message' => $message
+                ]
+           , 400);
+        }
+        return new SubjectCollection(Subject::with($this->userLoader)
+        ->where('academic_standard_id',$request->input('academic_standard_id'))
+        ->where('subject_group_id',$request->input('subject_group_id'))
+        ->get());
     }
 
     /**
@@ -29,7 +44,7 @@ class SubjectController extends Controller
 
         $data = $request->validated();
         $subject = Subject::create($data);
-        return new SubjectResource($subject);
+        return new SubjectResource($subject->load($this->userLoader));
     }
 
     /**
@@ -38,7 +53,7 @@ class SubjectController extends Controller
     public function show(Subject $subject)
     {
 
-        return new SubjectResource($subject);
+        return new SubjectResource($subject->load($this->userLoader));
     }
 
     /**
@@ -49,7 +64,7 @@ class SubjectController extends Controller
 
         $data = $request->validated();
         $subject->update($data);
-        return new SubjectResource($subject);
+        return new SubjectResource($subject->load($this->userLoader));
     }
 
     /**

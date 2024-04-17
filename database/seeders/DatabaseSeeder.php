@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\EducationBoard;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -21,40 +20,55 @@ class DatabaseSeeder extends Seeder
         // ]);
         \App\Models\Country::create([
             'country_code' => 'IN',
-            'name'         => 'INDIA',
+            'name' => 'INDIA',
         ]);
         \App\Models\State::create([
             'state_code' => 'WB',
-            'name'         => 'WEST BENGAL',
-            'country_id'   => 1,
+            'name' => 'WEST BENGAL',
+            'country_id' => 1,
         ]);
         \App\Models\Address::create([
-            'address_line_1'=> fake()->streetAddress,
-            'address_type'=>'permanent',
-            'state_id'=>1,
-            'country_id'   => 1,
+            'address_line_1' => fake()->streetAddress,
+            'address_type' => 'permanent',
+            'state_id' => 1,
+            'country_id' => 1,
         ]);
-         \App\Models\SchoolType::create([
-            'name' => 'HINDI MEDIUM',]);
-            \App\Models\EducationBoard::create([
-                'name' => 'Test Board',
-
-            ]);
-         \App\Models\School::create([
-            'name' => 'Test School',
+        \App\Models\SchoolType::create([
+            'name' => 'HINDI MEDIUM'
+        ]);
+        \App\Models\EducationBoard::create([
+            'name' => 'West Bengal Board Of Secondary Education',
+            'code' => 'WBBSE',
+        ]);
+        \App\Models\School::create([
+            'name' => 'Navajyoti Vidyapith',
+            'code' => 'NV',
             'school_type_id' => 1,
-            'education_board_id'=>1
+            'education_board_id' => 1,
         ]);
         \App\Models\Campus::create([
-            'name' => 'Test Campus',
+            'name' => 'Primary Section',
+            'code' => 'PC',
             'school_id' => 1,
-            'education_board_id'=>1
+            'education_board_id' => 1,
+        ]);
+        \App\Models\Campus::create([
+            'name' => 'Secondary Section',
+            'code' => 'SC',
+            'school_id' => 1,
+            'education_board_id' => 1,
         ]);
         \App\Models\AcademicSession::create([
-            'session' => '2023-2024',
-            'start_date'=>'2023-01-01',
-            'end_date'=>'2024-12-31',
-            'campus_id'=>1,
+            'session' => '2024',
+            'start_date' => '2024-01-01',
+            'end_date' => '2024-12-31',
+            'campus_id' => 1,
+        ]);
+        \App\Models\AcademicSession::create([
+            'session' => '2024',
+            'start_date' => '2024-01-01',
+            'end_date' => '2024-12-31',
+            'campus_id' => 2,
         ]);
 
         $this->call([

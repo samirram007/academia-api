@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Subject;
 
+use App\Enums\SubjectTypeEnum;
+
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreSubjectRequest extends FormRequest
 {
@@ -24,7 +27,13 @@ class StoreSubjectRequest extends FormRequest
         return [
             'name' => ['required','string','max:255'],
             'code' => ['sometimes','string','max:20'],
-            'description'=>['sometimes','string']
+            'description'=>['sometimes','nullable','string'],
+            'subject_type' =>  ['required',Rule::in(SubjectTypeEnum::cases())],
+            'subject_group_id' => ['required','exists:subject_groups,id'],
+            'academic_standard_id' => ['required','exists:academic_standards,id'],
+            'logo_image_id' => ['sometimes','nullable','exists:documents,id'],
+            'is_active' => ['sometimes','boolean'],
+
         ];
     }
 }
