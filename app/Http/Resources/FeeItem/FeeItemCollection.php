@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Resources\FeeTemplateDetails;
+namespace App\Http\Resources\FeeItem;
 
 use App\Http\Resources\SuccessCollection;
 use Illuminate\Http\Request;
 
 
-class FeeTemplateDetailsCollection extends SuccessCollection
+class FeeItemCollection extends SuccessCollection
 {
     /**
      * Transform the resource collection into an array.

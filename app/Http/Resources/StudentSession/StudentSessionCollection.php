@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Fee;
+namespace App\Http\Resources\StudentSession;
 
 use App\Http\Resources\SuccessCollection;
 use Illuminate\Http\Request;
 
-class FeeCollection extends SuccessCollection
+class StudentSessionCollection extends SuccessCollection
 {
     /**
      * Transform the resource collection into an array.

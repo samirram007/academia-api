@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\FeeTemplateDetails;
+namespace App\Http\Requests\FeeTemplateItem;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateFeeTemplateDetailsRequest extends FormRequest
+class StoreFeeTemplateItemRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +22,7 @@ class UpdateFeeTemplateDetailsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['sometimes','required','string','max:255'],
+            'name' => ['required','string','max:255'],
             'is_active'=>'sometimes|boolean',
             'sort_index'=>'required|integer',
             'fee_template_id'=>'required|exists:fee_templates,id',

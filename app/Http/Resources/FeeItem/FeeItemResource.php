@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Resources\FeeDetails;
+namespace App\Http\Resources\FeeItem;
 
 use App\Http\Resources\SuccessResource;
 use Illuminate\Http\Request;
 
 
-class FeeDetailsResource extends SuccessResource
+class FeeItemResource extends SuccessResource
 {
     /**
      * Transform the resource into an array.

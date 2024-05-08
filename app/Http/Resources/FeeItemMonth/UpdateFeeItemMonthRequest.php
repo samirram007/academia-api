@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\AcademicStandard;
+namespace App\Http\Requests\FeeItemMonth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreAcademicStandardRequest extends FormRequest
+class UpdateFeeItemMonthRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,7 @@ class StoreAcademicStandardRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required','string','max:255'],
-            'code' => ['sometimes','nullable','string','max:20'],
-            'description'=>['sometimes','nullable','string']
+            //
         ];
     }
 }

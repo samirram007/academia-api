@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests\FeeDetails;
+namespace App\Http\Requests\StudentSession;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateFeeDetailsRequest extends FormRequest
+class UpdateStudentSessionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,7 +22,7 @@ class UpdateFeeDetailsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required','string','max:255'],
+            //
         ];
     }
 }

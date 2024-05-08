@@ -15,7 +15,7 @@ class FeeTemplateController extends Controller
     /**
      * Display a listing of the resource.
      */
-    protected $userLoader=['campus','academic_session','academic_class','fee_template_details'];
+    protected $userLoader=['campus','academic_session','academic_class','fee_template_items','fee_template_items.fee_head'];
 
     public function index(Request $request)
     {

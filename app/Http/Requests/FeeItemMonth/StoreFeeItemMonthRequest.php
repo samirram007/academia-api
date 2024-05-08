@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\FeeDetailsMonth;
+namespace App\Http\Requests\FeeItemMonth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreFeeDetailsMonthRequest extends FormRequest
+class StoreFeeItemMonthRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

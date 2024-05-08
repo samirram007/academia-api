@@ -28,7 +28,7 @@ return new class extends Migration
             $table->foreign('academic_class_id')->references('id')->on('academic_classes');
             $table->timestamps();
         });
-        Schema::create('fee_template_details', function (Blueprint $table) {
+        Schema::create('fee_template_items', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->boolean('is_active')->default(true);
@@ -51,11 +51,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('fee_template_details', function (Blueprint $table) {
+        Schema::table('fee_template_items', function (Blueprint $table) {
             $table->dropUnique('fee_head_fee_template_unique');
             $table->dropUnique('name_fee_template_unique');
           });
-        Schema::dropIfExists('fee_template_details');
+        Schema::dropIfExists('fee_template_items');
         Schema::dropIfExists('fee_templates');
         Schema::dropIfExists('fee_heads');
     }

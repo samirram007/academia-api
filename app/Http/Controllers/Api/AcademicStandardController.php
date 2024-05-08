@@ -17,7 +17,6 @@ class AcademicStandardController extends Controller
      */
     public function index(Request $request)
     {
-
         return new AcademicStandardCollection(AcademicStandard::paginate());
     }
 

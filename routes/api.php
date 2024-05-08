@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\FeeController;
@@ -13,11 +12,15 @@ use App\Http\Controllers\Api\SchoolController;
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\FeeHeadController;
 use App\Http\Controllers\Api\SectionController;
+use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\SubjectController;
+use App\Http\Controllers\Api\TeacherController;
 use App\Http\Controllers\Api\BuildingController;
 use App\Http\Controllers\Api\DocumentController;
+use App\Http\Controllers\Api\GuardianController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\SchoolTypeController;
+
 use App\Http\Controllers\Api\DesignationController;
 use App\Http\Controllers\Api\FeeTemplateController;
 use App\Http\Controllers\Api\SubjectGroupController;
@@ -25,45 +28,57 @@ use App\Http\Controllers\Api\AcademicClassController;
 use App\Http\Controllers\Api\EducationBoardController;
 use App\Http\Controllers\Api\AcademicSessionController;
 use App\Http\Controllers\Api\AcademicStandardController;
-use App\Http\Controllers\Api\FeeTemplateDetailsController;
+use App\Http\Controllers\Api\FeeTemplateItemController;
+use App\Http\Controllers\Api\StudentSessionController;
 
-Route::post('register',[AuthController::class,'register']);
-Route::post('login',[AuthController::class,'login']);
-Route::middleware('auth:api')->group(function(){
-    Route::get('user',[AuthController::class,'user']);
-    Route::post('logout',[AuthController::class,'logout']);
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+Route::middleware('auth:api')->group(function () {
+    Route::get('user', [AuthController::class, 'user']);
+    Route::post('logout', [AuthController::class, 'logout']);
 
-Route::apiResource('users', UserController::class);
-Route::post('/documents', [DocumentController::class, 'store']);
-Route::put('/documents/{id}', [DocumentController::class, 'update']);
-Route::delete('/documents/{id}', [DocumentController::class, 'delete']);
-Route::get('/documents/user', [DocumentController::class, 'userDocuments']);
-Route::get('/documents/{id}', [DocumentController::class, 'show']);
-Route::get('/documents/file/{id}', [DocumentController::class, 'getFile']);
-Route::post('/documents/folder',[DocumentController::class, 'imageToFolder']);
+    Route::apiResource('users', UserController::class);
+    Route::apiResource('students', StudentController::class);
 
-Route::apiResource('school_types', SchoolTypeController::class);
-Route::apiResource('schools', SchoolController::class);
-Route::apiResource('campuses', CampusController::class);
-Route::apiResource('buildings', BuildingController::class);
-Route::apiResource('floors', FloorController::class);
+    Route::apiResource('guardians', GuardianController::class);
+    Route::apiResource('teachers', TeacherController::class);
+    Route::post('/documents', [DocumentController::class, 'store']);
+    Route::put('/documents/{id}', [DocumentController::class, 'update']);
+    Route::delete('/documents/{id}', [DocumentController::class, 'delete']);
+    Route::get('/documents/user', [DocumentController::class, 'userDocuments']);
+    Route::get('/documents/{id}', [DocumentController::class, 'show']);
+    Route::get('/documents/file/{id}', [DocumentController::class, 'getFile']);
+    Route::post('/documents/folder', [DocumentController::class, 'imageToFolder']);
 
-Route::apiResource('rooms', RoomController::class);
-Route::apiResource('academic_classes', AcademicClassController::class);
-Route::apiResource('academic_standards', AcademicStandardController::class);
-Route::apiResource('academic_sessions', AcademicSessionController::class);
-Route::apiResource('addresses', AddressController::class);
-Route::apiResource('departments', DepartmentController::class);
-Route::apiResource('designations', DesignationController::class);
-Route::apiResource('education_boards', EducationBoardController::class);
-Route::apiResource('sections', SectionController::class);
-Route::apiResource('subject_groups', SubjectGroupController::class);
-Route::apiResource('subjects', SubjectController::class);
+    Route::apiResource('school_types', SchoolTypeController::class);
+    Route::apiResource('schools', SchoolController::class);
+    Route::apiResource('campuses', CampusController::class);
+    Route::apiResource('buildings', BuildingController::class);
+    Route::apiResource('floors', FloorController::class);
 
-Route::apiResource('fee_heads', FeeHeadController::class);
-Route::apiResource('fee_templates', FeeTemplateController::class);
-Route::apiResource('fee_template_details', FeeTemplateDetailsController::class);
-Route::apiResource('fees', FeeController::class);
+    Route::apiResource('rooms', RoomController::class);
+    Route::apiResource('academic_classes', AcademicClassController::class);
+    Route::apiResource('academic_standards', AcademicStandardController::class);
+    Route::apiResource('academic_sessions', AcademicSessionController::class);
+    Route::apiResource('addresses', AddressController::class);
+    Route::apiResource('departments', DepartmentController::class);
+    Route::apiResource('designations', DesignationController::class);
+    Route::apiResource('education_boards', EducationBoardController::class);
+    Route::apiResource('sections', SectionController::class);
+    Route::apiResource('subject_groups', SubjectGroupController::class);
+    Route::apiResource('subjects', SubjectController::class);
+
+    Route::apiResource('fee_heads', FeeHeadController::class);
+    Route::apiResource('fee_templates', FeeTemplateController::class);
+    Route::apiResource('fee_template_items', FeeTemplateItemController::class);
+    Route::apiResource('fees', FeeController::class);
+    Route::get('fees_by_student_session/{student_session}',[ FeeController::class,'FeesByStudentSession']);
+
+
+    Route::get('student_sessions_by_student_id/{student_id}', [StudentSessionController::class,'StudentSessionsByStudentId']);
+    Route::get('student_sessions', [StudentSessionController::class,'index']);
+    Route::get('student_sessions/{student_session}', [StudentSessionController::class,'show']);
+    Route::post('student_session', [StudentSessionController::class,'store']);
 
 });
 

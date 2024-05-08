@@ -42,10 +42,10 @@ class AuthController extends Controller
 
         // $user = User::find($credentials);
         /** @var \App\Models\User $user */
-        $data = Auth::user();
-        $token = $data->createToken('myApp')->accessToken;
+        $user = Auth::user();
+        $token = $user->createToken('myApp')->accessToken;
         $response = [
-            'data' => new AuthUserResource($data),
+            'data' => new AuthUserResource($user),
             'token' => $token,
             'message' => 'Successfully logged In'
         ];
@@ -61,11 +61,17 @@ class AuthController extends Controller
         return new UserResource(Auth::user());
     }
     public function refresh(){
-        $token = Auth::user()->createToken('myApp')->accessToken;
+         /** @var \App\Models\User $user  */
+         $user=Auth::user();
+        $token =  $user->createToken('myApp')->accessToken;
         return response(['token' => $token], 200);
     }
     public function logout(){
-        Auth::logout();
+     //   Auth::logout();
+
+         /** @var \App\Models\User $user  */
+        $user=Auth::user();
+        $user->token()->revoke() ;
         return response(['message' => 'Successfully logged out'], 200);
     }
 }

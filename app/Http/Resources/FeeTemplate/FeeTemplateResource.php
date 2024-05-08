@@ -7,7 +7,7 @@ use App\Http\Resources\SuccessResource;
 use App\Http\Resources\Campus\CampusResource;
 use App\Http\Resources\AcademicSession\AcademicSessionResource;
 use App\Http\Resources\AcademicClass\AcademicClassResource;
-
+use App\Http\Resources\FeeTemplateItem\FeeTemplateItemCollection;
 
 class FeeTemplateResource extends SuccessResource
 {
@@ -28,7 +28,8 @@ class FeeTemplateResource extends SuccessResource
             'academic_session'=> new AcademicSessionResource($this->whenLoaded('academic_session')),
             'academic_class'=>new AcademicClassResource($this->whenLoaded('academic_class')),
             'campus'=>new CampusResource($this->whenLoaded('campus')),
-            // 'fee_template_details'=>new FeeTemplateCollection($this->fee_template_details),
+            'fee_template_items'=>new FeeTemplateItemCollection($this->whenLoaded('fee_template_items')),
+
 
 
         ];

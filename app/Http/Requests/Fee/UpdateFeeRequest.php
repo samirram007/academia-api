@@ -32,14 +32,14 @@ class UpdateFeeRequest extends FormRequest
             'paid_amount'=> ['sometimes','required', 'numeric'],
             'balance_amount'=> ['sometimes','required', 'numeric'],
             'payment_mode'=> ['sometimes','required','string','max:255'],
-            'fee_details'=> ['sometimes','required', 'array'],
-            'fee_details.*.id'=> ['sometimes','required', 'exists:fee_details,id'],
-            'fee_details.*.fee_id'=> ['sometimes','required', 'exists:fees,id'],
-            'fee_details.*.fee_head_id'=> ['required', 'exists:fee_heads,id'],
-            'fee_details.*.no_of_months'=> ['sometimes','required', 'numeric'],
-            'fee_details.*.monthly_fee_amount'=> ['sometimes','required', 'numeric'],
-            'fee_details.*.months'=> ['sometimes','required', 'array'],
-            'fee_details.*.amount'=> ['required', 'numeric'],
+            'fee_items'=> ['sometimes','required', 'array'],
+            'fee_items.*.id'=> ['sometimes','required', 'exists:fee_items,id'],
+            'fee_items.*.fee_id'=> ['sometimes','required', 'exists:fees,id'],
+            'fee_items.*.fee_head_id'=> ['required', 'exists:fee_heads,id'],
+            'fee_items.*.no_of_months'=> ['sometimes','required', 'numeric'],
+            'fee_items.*.monthly_fee_amount'=> ['sometimes','required', 'numeric'],
+            'fee_items.*.months'=> ['sometimes','required', 'array'],
+            'fee_items.*.amount'=> ['required', 'numeric'],
         ];
     }
 }

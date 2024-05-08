@@ -26,8 +26,8 @@ class FeeTemplate extends Model
         public function academic_class() {
         return $this->belongsTo(AcademicClass::class);
         }
-     public function fee_template_details() {
-        return $this->hasMany(FeeTemplateDetails::class);
+     public function fee_template_items() {
+        return $this->hasMany(FeeTemplateItem::class);
         }
 
 }

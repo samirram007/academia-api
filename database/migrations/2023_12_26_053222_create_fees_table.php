@@ -27,22 +27,22 @@ return new class extends Migration
             $table->foreign('student_id')->references('id')->on('users');
             $table->timestamps();
         });
-        Schema::create('fee_details', function (Blueprint $table) {
+        Schema::create('fee_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('fee_id');
             $table->unsignedBigInteger('fee_head_id');
-            $table->integer('no_of_months')->nullable();
-            $table->integer('monthly_fee_amount')->nullable();
+            $table->integer('quantity')->default(1);
             $table->string('months')->nullable(); // comma separated months e.g., Jan-Feb-Mar
             $table->decimal('amount', 10, 2);
+            $table->decimal('total_amount', 10, 2);
             $table->timestamps();
         });
-        Schema::create('fee_details_months', function (Blueprint $table) {
+        Schema::create('fee_item_months', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('fee_detail_id');
+            $table->unsignedBigInteger('fee_item_id');
             $table->string('month');
             $table->decimal('amount', 10, 2);
-            $table->foreign('fee_detail_id')->references('id')->on('fee_details');
+            $table->foreign('fee_detail_id')->references('id')->on('fee_items');
             $table->timestamps();
         });
         Schema::create('fee_receipt', function (Blueprint $table) {
@@ -76,8 +76,8 @@ return new class extends Migration
     {
         Schema::dropIfExists('fees_fees_receipt');
         Schema::dropIfExists('fee_receipts');
-        Schema::dropIfExists('fee_details_months');
-        Schema::dropIfExists('fee_details');
+        Schema::dropIfExists('fee_item_months');
+        Schema::dropIfExists('fee_items');
         Schema::dropIfExists('fees');
     }
 };
