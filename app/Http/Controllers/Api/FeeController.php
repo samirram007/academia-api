@@ -9,6 +9,7 @@ use App\Http\Resources\Fee\FeeCollection;
 use App\Http\Resources\Fee\FeeResource;
 use App\Models\Fee;
 use App\Models\FeeItem;
+use App\Models\FeeItemMonth;
 use App\Models\StudentSession;
 use Illuminate\Http\Request;
 
@@ -19,16 +20,49 @@ class FeeController extends Controller
      */
     public function index(Request $request)
     {
-        return new FeeCollection(Fee::all());
+        $message = [];
+
+        if (!$request->has('campus_id')) {
+            array_push($message, 'Please provide campus_id');
+        }
+        if (!$request->has('academic_session_id')) {
+            array_push($message, 'Please provide academic_session_id');
+        }
+        if ($message) {
+            return response()->json(
+                [
+                    'status' => false,
+                    'message' => $message,
+                ]
+                , 400);
+        }
+        $fees = Fee::with('fee_template', 'academic_session', 'student', 'academic_class', 'campus',
+            'student_session', 'student_session.campus', 'student_session.academic_class',
+            'student_session.academic_session', 'student_session.section', 'student_session.fee_item_months',
+
+            'fee_items', 'fee_items.fee_head', 'fee_items.fee_item_months','fee_items.fee_item_months.month',
+            'campus', 'campus.school', 'campus.school.address', 'campus.school.logo_image')
+            ->where('academic_session_id', $request->academic_session_id)
+            ->whereBetween('fee_date', [$request->input('from'), $request->input('to')])
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return new FeeCollection($fees);
     }
     public function FeesByStudentSession(StudentSession $studentSession)
     {
+        //dd($studentSession);
 
-        $fees=Fee::with('fee_template','academic_session')
-        ->where('student_id',$studentSession->student_id)
-        ->where('academic_session_id',$studentSession->academic_session_id)
-        ->orderBy('id','desc')
-        ->get();
+        $fees = Fee::with('fee_template', 'academic_session', 'student', 'academic_class', 'campus',
+            'student_session', 'student_session.campus', 'student_session.academic_class',
+            'student_session.academic_session', 'student_session.section', 'student_session.fee_item_months',
+            'fee_items', 'fee_items.fee_head', 'fee_items.fee_item_months','fee_items.fee_item_months.month',
+            'campus', 'campus.school', 'campus.school.address', 'campus.school.logo_image')
+            ->where('student_id', $studentSession->student_id)
+            ->where('academic_session_id', $studentSession->academic_session_id)
+            ->orderBy('id', 'desc')
+            ->get();
+
         return new FeeCollection($fees);
     }
 
@@ -37,36 +71,65 @@ class FeeController extends Controller
      */
     public function store(StoreFeeRequest $request)
     {
-       // dd($request->all());
-    //    \DB::transaction(function () use ($request) {
-        $data = $request->validated();
-        $data['fee_no']=$this->GetFeeNo($data['academic_session_id']);
-        $fee = Fee::create($data);
 
-        foreach($data['fee_items'] as $key=>$feeItem){
-            $fee_item= new FeeItem();
-            $fee_item->fee_id=$fee->id;
-            $fee_item->fee_head_id=$feeItem['fee_head_id'];
-            $fee_item->quantity=$feeItem['quantity'];
-            $fee_item->amount=$feeItem['amount'];
-            $fee_item->total_amount=$feeItem['total_amount'];
-           // dd($fee_items);
+        //  \DB::transaction(function () use ($request) {
+        $data = $request->validated();
+        $data['fee_no'] = $this->GetFeeNo($data['academic_session_id']);
+
+        $fee = Fee::create($data);
+        foreach ($data['fee_items'] as $key => $feeItem) {
+
+            $fee_item = new FeeItem();
+            $fee_item->fee_id = $fee->id;
+            $fee_item->fee_head_id = $feeItem['fee_head_id'];
+            $fee_item->quantity = $feeItem['quantity'];
+            $fee_item->keep_periodic_details = $feeItem['keep_periodic_details'];
+            $fee_item->is_customizable = $feeItem['is_customizable'];
+            $fee_item->is_active = $feeItem['is_active'];
+
+            if ($feeItem['keep_periodic_details']) {
+                // dd($feeItem['months']??'months');
+                $fee_item->months = $feeItem['months'] ?? ($feeItem['quantity'] . ($feeItem['quantity'] == 1 ? ' month' : ' months'));
+            }
+            $fee_item->amount = $feeItem['amount'];
+            $fee_item->total_amount = $feeItem['total_amount'];
+            // dd($fee_items);
             $fee_item->save();
+
+            if ($feeItem['keep_periodic_details']) {
+
+                $fee_item_months = FeeItemMonth::where('student_session_id', $data['student_session_id'])
+                    ->latest('month_id')->first();
+                $month_id = $fee_item_months ? $fee_item_months->month_id + 1 : 1;
+
+                for ($i = 0; $i <  $feeItem['quantity']; $i++) {
+                    $feeItem['fee_item_months'][$i]['student_session_id'] = $data['student_session_id'];
+                    $feeItem['fee_item_months'][$i]['month_id'] = $month_id+$i;
+                    $feeItem['fee_item_months'][$i]['amount'] = $feeItem['amount'];
+                }
+                 $fee_item->fee_item_months()->createMany($feeItem['fee_item_months']);
+            }
         }
         return new FeeResource($fee);
-    //    });
-       return response()->json(['error' => 'Check you input(s)'], 401);
+        //  });
+        return response()->json(['error' => 'Check you input(s)'], 401);
     }
-function GetFeeNo($academic_session_id){
-    $countFees=Fee::where('academic_session_id',$academic_session_id)->count();
-    return $countFees+1;
+    public function GetFeeNo($academic_session_id)
+    {
+        $countFees = Fee::where('academic_session_id', $academic_session_id)
+            ->latest('fee_no')
+            ->first();
+        return $countFees ? $countFees->fee_no + 1 : 1;
 
-}
+    }
     /**
      * Display the specified resource.
      */
     public function show(Fee $fee)
     {
+        $fee = Fee::with('fee_template', 'academic_session', 'student', 'academic_class', 'campus',
+            'fee_items', 'fee_items.fee_head',
+            'campus.school', 'campus.school.address', 'campus.school.logo_image')->find($fee->id);
         return new FeeResource($fee);
     }
 
@@ -75,15 +138,68 @@ function GetFeeNo($academic_session_id){
      */
     public function update(UpdateFeeRequest $request, Fee $fee)
     {
-        $data = $request->validated();
-        $fee->update($data);
-        return new FeeResource($fee);
+        try {
+
+            $result = \DB::transaction(function () use ($request, $fee) {
+                $data = $request->validated();
+                //throw new Exception("Failed to create student record.");
+                $fee->update($data);
+
+                foreach ($data['fee_items'] as $key => $feeItem) {
+                    $fee_item = FeeItem::where('fee_id', $fee->id)->where('fee_head_id', $feeItem['fee_head_id'])->first();
+                    if (!$fee_item) {
+                        $fee_item = new FeeItem();
+                    }
+                    $fee_item->fee_id = $fee->id;
+                    $fee_item->fee_head_id = $feeItem['fee_head_id'];
+                    $fee_item->quantity = $feeItem['quantity'];
+                    $fee_item->amount = $feeItem['amount'];
+                    $fee_item->total_amount = $feeItem['total_amount'];
+                    $fee_item->keep_periodic_details = $feeItem['keep_periodic_details'];
+                    $fee_item->is_customizable = $feeItem['is_customizable'];
+                    $fee_item->is_active = $feeItem['is_active'];
+                    // dd($fee_items);
+                    $fee_item->save();
+                    if ($feeItem['keep_periodic_details']) {
+                        $fee_item->fee_item_months()->delete();
+                        $fee_item_months = FeeItemMonth::where('student_session_id', $data['student_session_id'])
+                            ->latest('month_id')->first();
+                        $month_id = $fee_item_months ? $fee_item_months->month_id + 1 : 1;
+
+                        for ($i = 0; $i <  $feeItem['quantity']; $i++) {
+                            $feeItem['fee_item_months'][$i]['student_session_id'] = $data['student_session_id'];
+                            $feeItem['fee_item_months'][$i]['month_id'] = $month_id+$i;
+                            $feeItem['fee_item_months'][$i]['amount'] = $feeItem['amount'];
+                        }
+                         $fee_item->fee_item_months()->delete();
+
+                         $fee_item->fee_item_months()->createMany($feeItem['fee_item_months']);
+
+                    }
+                }
+                //  dd( new FeeResource($fee));
+                return $fee;
+            });
+            return new FeeResource($result);
+            //    return response()->json([
+            //     'success' => true,
+            //     'data' => $result
+            // ], 201);
+
+        } catch (\Exception $e) {
+            // If any exception occurs, transaction will be rolled back
+            return response()->json([
+                'success' => false,
+                'message' => 'Error occurred: ' . $e->getMessage(),
+            ], 500);
+        }
+        //  return response()->json(['error' => 'Check you input(s)'], 401);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy( Fee $fee)
+    public function destroy(Fee $fee)
     {
         $fee->delete();
         return response(null, 204);

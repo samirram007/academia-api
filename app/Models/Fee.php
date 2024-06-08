@@ -15,7 +15,9 @@ class Fee extends Model
         'fee_template_id',
         'student_id',
         'academic_session_id',
+        'student_session_id',
         'academic_class_id',
+        'campus_id',
         'total_amount',
         'paid_amount',
         'balance_amount',
@@ -35,11 +37,15 @@ class Fee extends Model
     public function academic_session() {
         return $this->belongsTo(AcademicSession::class);
     }
+    public function campus() {
+        return $this->belongsTo(Campus::class);
+    }
     public function academic_class() {
         return $this->belongsTo(AcademicClass::class);
     }
-    public function studentSessions() {
-        return $this->hasMany(StudentSession::class::where('student_id',$this->student_id)->where('academic_session_id',$this->academic_session_id))->get();
+    public function student_session() {
+
+        return $this->belongsTo(StudentSession::class,'student_session_id') ;
     }
     public function fee_items(){
         return $this->hasMany(FeeItem::class);

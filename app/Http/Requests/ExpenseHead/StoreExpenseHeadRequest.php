@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\FeeItemMonth;
+namespace App\Http\Requests\ExpenseHead;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreFeeItemMonthRequest extends FormRequest
+class StoreExpenseHeadRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,8 @@ class StoreFeeItemMonthRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required','string','max:255','unique:expense_heads,name'],
         ];
+
     }
 }

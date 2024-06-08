@@ -11,10 +11,14 @@ class FeeItem extends Model
     protected $fillable = [
         'fee_id',
         'fee_head_id',
-        'no_of_months',
-        'monthly_fee_amount',
+        'quantity',
         'months',
         'amount',
+        'is_active',
+        'keep_periodic_details',
+        'is_customizable',
+        'is_deleted',
+        'total_amount',
     ];
     public function fee()
     {
@@ -24,5 +28,8 @@ class FeeItem extends Model
     public function fee_head()
     {
         return $this->belongsTo(FeeHead::class, 'fee_head_id');
+    }
+    public function fee_item_months(){
+        return $this->hasMany(FeeItemMonth::class);
     }
 }

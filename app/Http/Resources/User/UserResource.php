@@ -60,9 +60,11 @@ class UserResource extends SuccessResource
             'account_holder_name'=>$this->whenNotNull($this->account_holder_name),
             'bank_ifsc'=>$this->whenNotNull($this->bank_ifsc),
             'bank_branch'=>$this->whenNotNull($this->bank_branch),
-            'campus_id'=>$this->whenNotNull($this->campus_id),
             'admission_no'=>$this->whenNotNull($this->admission_no),
             'admission_date'=>$this->whenNotNull($this->admission_date),
+            'campus_id'=>$this->whenNotNull($this->campus_id),
+            'academic_session_id'=>$this->whenNotNull($this->academic_session_id),
+            'academic_class_id'=>$this->whenNotNull($this->academic_class_id),
             'guardians'=>new UserCollection($this->whenLoaded('guardians')),
         ];
 

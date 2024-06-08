@@ -73,6 +73,17 @@ class FeeTemplateController extends Controller
         $fee_template->update($data);
         return new FeeTemplateResource($fee_template);
     }
+    public function clone(StoreFeeTemplateRequest $request, $id)
+    {
+        $existing_fee_template=FeeTemplate::find($id);
+
+        $data = $request->validated();
+        $fee_template = FeeTemplate::create($data);
+
+        $fee_template->fee_template_items()->createMany($existing_fee_template->fee_template_items()->get()->toArray());
+       // dd($fee_template);
+        return new FeeTemplateResource($fee_template);
+    }
 
     /**
      * Remove the specified resource from storage.

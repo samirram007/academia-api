@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\FeeItem;
+namespace App\Http\Requests\ExpenseItem;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateFeeItemRequest extends FormRequest
+class StoreExpenseItemsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,11 @@ class UpdateFeeItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required','string','max:255'],
+            'expense_id' => ['required', 'exists:expenses,id'],
+            'expense_head_id'=> ['required', 'exists:expense_heads,id'],
+            'amount' => ['required', 'numeric'],
+            'quantity'=> ['sometimes','required', 'integer'],
+            'total_amount'=> ['sometimes','required', 'integer'],
         ];
     }
 }

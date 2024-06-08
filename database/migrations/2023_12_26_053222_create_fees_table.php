@@ -19,12 +19,13 @@ return new class extends Migration
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('academic_session_id');
             $table->unsignedBigInteger('academic_class_id');
+            $table->unsignedBigInteger('campus_id');
             $table->decimal('total_amount', 10, 2)->default(0);
             $table->decimal('paid_amount', 10, 2)->nullable();
             $table->decimal('balance_amount', 10, 2)->nullable();
             $table->string('payment_mode')->nullable();
-            $table->foreign('fee_template_id')->references('id')->on('fee_templates');
-            $table->foreign('student_id')->references('id')->on('users');
+            // $table->foreign('fee_template_id')->references('id')->on('fee_templates');
+            // $table->foreign('student_id')->references('id')->on('users');
             $table->timestamps();
         });
         Schema::create('fee_items', function (Blueprint $table) {
@@ -34,18 +35,23 @@ return new class extends Migration
             $table->integer('quantity')->default(1);
             $table->string('months')->nullable(); // comma separated months e.g., Jan-Feb-Mar
             $table->decimal('amount', 10, 2);
+            $table->boolean('is_customizable')->default(false);
+            $table->boolean('keep_periodic_details')->default(false);
+            $table->boolean('is_active')->default(true);
+            $table->boolean('is_deleted')->default(false);
             $table->decimal('total_amount', 10, 2);
             $table->timestamps();
         });
         Schema::create('fee_item_months', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('fee_item_id');
-            $table->string('month');
+            $table->unsignedBigInteger('student_session_id');
+            $table->unsignedBigInteger('month_id');
             $table->decimal('amount', 10, 2);
-            $table->foreign('fee_detail_id')->references('id')->on('fee_items');
+            // $table->foreign('fee_item_id')->references('id')->on('fee_items');
             $table->timestamps();
         });
-        Schema::create('fee_receipt', function (Blueprint $table) {
+        Schema::create('fee_receipts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('paid_by_user_id');
             $table->date('receipt_date');
@@ -55,15 +61,15 @@ return new class extends Migration
             $table->string('receipt_note')->nullable();
             $table->boolean('is_system_receipt')->default(true);
             $table->timestamp('system_receipt_date')->nullable();
-            $table->foreign('paid_by_user_id')->references('id')->on('users');
+            // $table->foreign('paid_by_user_id')->references('id')->on('users');
             $table->timestamps();
         });
         //fee and fee receipts has many to many relationship
-        Schema::create('fee_fee_receipt', function (Blueprint $table) {
+        Schema::create('fee_fee_receipts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('fee_id');
             $table->unsignedBigInteger('fee_receipt_id');
-            $table->foreign('fee_id')->references('id')->on('fees');
+            // $table->foreign('fee_id')->references('id')->on('fees');
             // $table->foreign('fee_receipt_id')->references('id')->on('fee_receipts');
             $table->timestamps();
         });
@@ -74,7 +80,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fees_fees_receipt');
+        Schema::dropIfExists('fees_fees_receipts');
         Schema::dropIfExists('fee_receipts');
         Schema::dropIfExists('fee_item_months');
         Schema::dropIfExists('fee_items');

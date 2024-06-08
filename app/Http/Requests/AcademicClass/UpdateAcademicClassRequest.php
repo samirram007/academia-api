@@ -26,7 +26,6 @@ class UpdateAcademicClassRequest extends FormRequest
             'code' => 'sometimes|required|string|max:255',
             'campus_id' => 'sometimes|required|integer|exists:campuses,id',
             'academic_standard_id' => 'sometimes|required|integer|exists:academic_standards,id',
-            'section_id' => 'sometimes|required|integer|exists:sections,id',
             'capacity' => 'sometimes|required|integer',
         ];
     }

@@ -42,8 +42,9 @@ class FeeTemplateItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreFeeTemplateItemRequest $request)
+     public function store(StoreFeeTemplateItemRequest $request)
     {
+       // dd($request->all());
         $data = $request->validated();
 
         $fee_template_item = FeeTemplateItem::create($data);

@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('student_session', function (Blueprint $table) {
+        Schema::create('admissions', function (Blueprint $table) {
             $table->id();
+            $table->string('admission_no')->nullable();
+            $table->date('admission_date')->nullable();
             $table->unsignedBigInteger('student_id');
+            $table->unsignedBigInteger('campus_id');
             $table->unsignedBigInteger('academic_session_id');
             $table->unsignedBigInteger('academic_class_id');
-            $table->unsignedBigInteger('academic_standard_id')->nullable();
-            $table->unsignedBigInteger('roll_no')->nullable();
-            $table->unsignedBigInteger('status');
+            $table->boolean('is_active')->default(false);
+            $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('student_session');
+        Schema::dropIfExists('admissions');
     }
 };

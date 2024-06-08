@@ -28,8 +28,15 @@ use App\Http\Controllers\Api\AcademicClassController;
 use App\Http\Controllers\Api\EducationBoardController;
 use App\Http\Controllers\Api\AcademicSessionController;
 use App\Http\Controllers\Api\AcademicStandardController;
+use App\Http\Controllers\Api\ExpenseController;
+use App\Http\Controllers\Api\ExpenseHeadController;
+use App\Http\Controllers\Api\FeeItemController;
+use App\Http\Controllers\Api\FeeItemMonthController;
 use App\Http\Controllers\Api\FeeTemplateItemController;
+use App\Http\Controllers\Api\MonthController;
+use App\Http\Controllers\Api\PromotionController;
 use App\Http\Controllers\Api\StudentSessionController;
+use App\Http\Controllers\Api\StudentIdCardController;
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
@@ -39,7 +46,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('users', UserController::class);
     Route::apiResource('students', StudentController::class);
-
+    Route::apiResource('student_id_cards',StudentIdCardController::class);
     Route::apiResource('guardians', GuardianController::class);
     Route::apiResource('teachers', TeacherController::class);
     Route::post('/documents', [DocumentController::class, 'store']);
@@ -70,18 +77,32 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('fee_heads', FeeHeadController::class);
     Route::apiResource('fee_templates', FeeTemplateController::class);
+    Route::post('fee_templates/clone/{id}', [FeeTemplateController::class,'clone']);
     Route::apiResource('fee_template_items', FeeTemplateItemController::class);
     Route::apiResource('fees', FeeController::class);
     Route::get('fees_by_student_session/{student_session}',[ FeeController::class,'FeesByStudentSession']);
 
 
+    Route::apiResource('expenses', ExpenseController::class);
+    Route::apiResource('expense_heads', ExpenseHeadController::class);
+
+
     Route::get('student_sessions_by_student_id/{student_id}', [StudentSessionController::class,'StudentSessionsByStudentId']);
     Route::get('student_sessions', [StudentSessionController::class,'index']);
     Route::get('student_sessions/{student_session}', [StudentSessionController::class,'show']);
-    Route::post('student_session', [StudentSessionController::class,'store']);
+    Route::post('student_sessions', [StudentSessionController::class,'store']);
+    Route::get('student_sessions_generate_roll_no', [StudentSessionController::class,'generate_roll_no']);
+
+    Route::post('student_sessions/enrollment', [StudentSessionController::class,'enrollment']);
+    Route::put('student_sessions/enrollment/{id}', [StudentSessionController::class,'enrollmentUpdate']);
+    Route::apiResource('promotions',PromotionController::class);
+
+
 
 });
-
+Route::get('/months', [MonthController::class, 'index']);
+Route::apiResource('fee_items', FeeItemController::class);
+Route::apiResource('fee_item_months', FeeItemMonthController::class);
 Route::get('/address_type', [EnumController::class, 'address_type']);
 Route::get('/gender', [EnumController::class, 'gender']);
 Route::get('/nationality', [EnumController::class, 'nationality']);

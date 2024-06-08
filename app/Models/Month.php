@@ -7,5 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Month extends Model
 {
-    use HasFactory;
+    use  HasFactory;
+    protected $fillable = [
+        'name',
+        'short_name',
+        'number',
+        'no_of_days',
+        'is_february'
+    ];
 }

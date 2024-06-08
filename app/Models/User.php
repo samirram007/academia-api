@@ -4,18 +4,15 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-
-
-
+use App\Enums\UserStatusEnum;
+use App\Enums\UserTypeEnum;
 use App\Models\Campus;
 use App\Models\Document;
-use App\Enums\UserTypeEnum;
-use Illuminate\Support\Str;
-use App\Enums\UserStatusEnum;
-use Laravel\Passport\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -61,10 +58,10 @@ class User extends Authenticatable
         'bank_ifsc',
         'bank_branch',
         'campus_id',
+        'academic_session_id',
+        'academic_class_id',
         'admission_no',
-        'admission_date'
-
-
+        'admission_date',
 
     ];
 
@@ -84,34 +81,53 @@ class User extends Authenticatable
      * @var array<string, string>;
      */
     protected $casts = [
-        'username'=>'string',
+        'username' => 'string',
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'user_type'=>UserTypeEnum::class,
-        'status'=>UserStatusEnum::class,
+        'user_type' => UserTypeEnum::class,
+        'status' => UserStatusEnum::class,
     ];
     //Hello World......
-public function profile_document(){
-    return $this->belongsTo(Document::class,'profile_document_id');
-}
-public function addresses(){
-    return $this->hasMany(Address::class);
-}
-public function address(){
-    return $this->belongsTo(Address::class) ;
-}
-public function campus(){
-    return $this->belongsTo(Campus::class) ;
-}
-public function designation(){
-    return $this->belongsTo(Designation::class);
-}
-public function department(){
-    return $this->belongsTo(Department::class);
-}
-public function students()
+    public function profile_document()
     {
-        return $this->belongsToMany(User::class, 'student_guardian', 'guardian_id', 'student_id');
+        return $this->belongsTo(Document::class, 'profile_document_id');
+    }
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
+    }
+    public function campus()
+    {
+        return $this->belongsTo(Campus::class);
+    }
+    public function designation()
+    {
+        return $this->belongsTo(Designation::class);
+    }
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+    public function academic_session()
+    {
+        return $this->belongsTo(AcademicSession::class);
+    }
+
+    public function academic_class()
+    {
+        return $this->belongsTo(AcademicClass::class);
+    }
+// public function students()
+//     {
+//         return $this->belongsToMany(User::class, 'student_guardian', 'guardian_id', 'student_id');
+//     }
+    public function student_sessions()
+    {
+        return $this->hasMany(StudentSession::class, 'student_id', 'id');
     }
 
     public function guardians()
@@ -124,15 +140,14 @@ public function students()
 
         // Listen for the 'creating' event to set default values before a user is created
 
-         static::creating(function ($user) {
+        static::creating(function ($user) {
             $username = $user->username ?? Str::slug(static::setUnAttribute($user->attributes['name']));
             $user->attributes['username'] = $username;
-            $user->attributes['user_type'] = $user->user_type ??'student';
-            $user->attributes['password'] = $user->password ??'password';
+            $user->attributes['user_type'] = $user->user_type ?? 'student';
+            $user->attributes['password'] = $user->password ?? 'password';
 
         });
     }
-
 
     // protected static function setUsernameAttribute($value)
     protected static function setUnAttribute($value)
@@ -143,20 +158,17 @@ public function students()
         $value = preg_replace('/[^a-zA-Z0-9]+/', '', $value);
         $baseUsername = strtolower(substr(str_replace(' ', '', $value), 0, 6));
 
-
-            // If the username exists, append a random number to make it unique
-            do {
-                // Generate a random number
-                $randomNumber = str_pad(mt_rand(1, 9999), 4, '0', STR_PAD_LEFT);
-                // Append the random number to the base username
-                $username = $baseUsername . $randomNumber;
-                // Check if the newly generated username exists
-                $count = User::where('username', $username)->count();
-            } while ($count > 0); // Loop until a unique username is found
+        // If the username exists, append a random number to make it unique
+        do {
+            // Generate a random number
+            $randomNumber = str_pad(mt_rand(1, 9999), 4, '0', STR_PAD_LEFT);
+            // Append the random number to the base username
+            $username = $baseUsername . $randomNumber;
+            // Check if the newly generated username exists
+            $count = User::where('username', $username)->count();
+        } while ($count > 0); // Loop until a unique username is found
 
         return $username;
     }
 
 }
-
-

@@ -14,7 +14,6 @@ class AcademicClass extends Model
         'code',
         'campus_id',
         'academic_standard_id',
-        'section_id',
         'capacity'
     ];
     public function academic_standard(){
@@ -23,7 +22,5 @@ class AcademicClass extends Model
     public function campus(){
         return $this->belongsTo(Campus::class);
     }
-    public function section(){
-        return $this->belongsTo(Section::class);
-    }
+
 }

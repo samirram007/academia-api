@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 
 class AcademicClassController extends Controller
 {
-    protected $userLoader=['campus','academic_standard','section'];
+    protected $userLoader=['campus','academic_standard' ];
     public function index(Request $request)
     {
         $message=[];

@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Models\ExpenseHead;
+use App\Http\Controllers\Controller;
+use App\Models\admission;
 use Illuminate\Http\Request;
 
-class ExpenseHeadController extends Controller
+class AdmissionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class ExpenseHeadController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ExpenseHead $expenseHead)
+    public function show(admission $admission)
     {
         //
     }
@@ -42,7 +43,7 @@ class ExpenseHeadController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ExpenseHead $expenseHead)
+    public function edit(admission $admission)
     {
         //
     }
@@ -50,7 +51,7 @@ class ExpenseHeadController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ExpenseHead $expenseHead)
+    public function update(Request $request, admission $admission)
     {
         //
     }
@@ -58,7 +59,7 @@ class ExpenseHeadController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ExpenseHead $expenseHead)
+    public function destroy(admission $admission)
     {
         //
     }

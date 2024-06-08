@@ -2,10 +2,10 @@
 
 namespace App\Http\Resources\Transport;
 
+use App\Http\Resources\SuccessResource;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 
-class TransportResource extends JsonResource
+class TransportResource extends SuccessResource
 {
     /**
      * Transform the resource into an array.

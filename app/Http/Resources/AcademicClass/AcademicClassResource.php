@@ -23,10 +23,10 @@ class AcademicClassResource extends SuccessResource
             'code' => $this->code,
             'campus_id' => $this->campus_id,
             'academic_standard_id' => $this->academic_standard_id,
-            'section_id' => $this->section_id,
+            // 'section_id' => $this->section_id,
             'campus' => new CampusResource($this->whenLoaded('campus')),
             'academic_standard' => new AcademicStandardResource($this->whenLoaded('academic_standard')),
-            'section' => new SectionResource($this->whenLoaded('section')),
+            // 'section' => new SectionResource($this->whenLoaded('section')),
             'capacity' => $this->capacity,
 
         ];

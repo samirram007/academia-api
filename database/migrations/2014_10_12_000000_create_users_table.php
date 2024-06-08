@@ -65,7 +65,9 @@ return new class extends Migration
             $table->string('bank_branch',100)->nullable();
             $table->string('admission_no',100)->nullable();
             $table->date('admission_date')->nullable();
-
+            $table->unsignedBigInteger('academic_session_id')->nullable();
+            $table->unsignedBigInteger('campus_id')->nullable();
+            $table->unsignedBigInteger('academic_class_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
