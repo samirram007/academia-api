@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('transport_pickup_drops', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->unsignedBigInteger('pickup_drop_points_id')->nullable();
+            $table->unsignedBigInteger('pickup_drop_datetime')->nullable();
+            $table->unsignedBigInteger('transport_id');
             $table->timestamps();
         });
     }

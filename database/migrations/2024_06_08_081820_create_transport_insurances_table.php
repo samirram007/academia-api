@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('transport_insurances', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('transport_id');
+            $table->unsignedBigInteger('document_id')->nullable();
+            $table->string('insurance_no')->nullable();
+            $table->date('insurance_date')->nullable();
+            $table->date('insurance_valid_date')->nullable();
+            $table->date('renewal_date')->nullable();
+            $table->integer('insured_value')->default(50);
+            $table->integer('purchase_cost')->default(50);
             $table->timestamps();
         });
     }

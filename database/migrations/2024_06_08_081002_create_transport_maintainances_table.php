@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transport_maintainances', function (Blueprint $table) {
+        Schema::create('transport_maintenances', function (Blueprint $table) {
             $table->id();
+            $table->date('transport_maintenance_date')->nullable();
+            $table->date('repaired_date')->nullable();
+            $table->text('reason')->nullable();
+            $table->text('note')->nullable();
+            $table->unsignedBigInteger('document_id')->nullable();
             $table->timestamps();
         });
     }

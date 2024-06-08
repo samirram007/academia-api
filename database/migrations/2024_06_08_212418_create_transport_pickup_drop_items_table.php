@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transport_slots', function (Blueprint $table) {
+        Schema::create('transport_pickup_drop_items', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('transport_id');
-            $table->string('transport_team_id');
-            $table->string('capacity');
+            $table->string('user_id');
+            $table->unsignedBigInteger('pickup_drop_id')->nullable();
+            $table->unsignedBigInteger('pickup_drop_datetime')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transport_slots');
+        Schema::dropIfExists('transport_pickup_drop_items');
     }
 };

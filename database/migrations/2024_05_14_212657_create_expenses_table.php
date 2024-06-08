@@ -24,6 +24,7 @@ return new class extends Migration
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
             $table->string('expense_no');
+            $table->string('voucher_no')->nullable();
             $table->date('expense_date');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('academic_session_id');
@@ -32,6 +33,8 @@ return new class extends Migration
             $table->decimal('paid_amount', 10, 2)->nullable();
             $table->decimal('balance_amount', 10, 2)->nullable();
             $table->string('payment_mode')->nullable();
+            $table->string('narration')->nullable();
+            $table->unsignedBigInteger('document_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });

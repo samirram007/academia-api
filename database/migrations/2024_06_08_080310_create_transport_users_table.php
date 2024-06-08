@@ -13,6 +13,23 @@ return new class extends Migration
     {
         Schema::create('transport_users', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('student_session_id')->nullable();
+            $table->unsignedBigInteger('transport_id');
+            $table->unsignedBigInteger('transport_slot_id')->nullable();
+            $table->unsignedBigInteger('pickup_drop_point_id')->nullable();
+            $table->date('join_date')->nullable();
+            $table->date('dissociate_date')->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->unsignedBigInteger('journey_type_id')->nullable();
+            $table->date('pickup_time')->nullable();
+            $table->date('drop_time')->nullable();
+            $table->boolean('is_free')->default(false);
+            $table->boolean('monthly_charge')->default(false);
+            $table->boolean('is_idcard_printable')->default(false);
+            $table->integer('idcard_print_count')->default(0);
+            $table->boolean('is_release_idcard_printable')->default(false);
+            $table->integer('release_idcard_print_count')->default(0);
             $table->timestamps();
         });
     }

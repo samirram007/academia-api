@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('transport_teams', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('transport_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });
     }

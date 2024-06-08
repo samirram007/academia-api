@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('transport_documents', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->nullable();
+            $table->string('transport_id');
+            $table->unsignedBigInteger('document_id');
             $table->timestamps();
         });
     }
