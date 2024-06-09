@@ -13,10 +13,16 @@ return new class extends Migration
     {
         Schema::create('transport_pickup_drops', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('pickup_drop_points_id')->nullable();
-            $table->unsignedBigInteger('pickup_drop_datetime')->nullable();
+            $table->date('pickup_drop_date');
+            $table->time('pickup_time')->nullable();
+            $table->time('drop_time')->nullable();
             $table->unsignedBigInteger('transport_id');
+            $table->unsignedBigInteger('journey_type_id')->nullable();
+            $table->unsignedBigInteger('transport_slot_id')->nullable();
+            $table->unsignedBigInteger('transport_team_id')->nullable();
+            $table->integer('status')->comment('1=Active,2=Inactive,3=Deleted')->default(1);
             $table->timestamps();
         });
     }

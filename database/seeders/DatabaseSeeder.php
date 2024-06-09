@@ -71,6 +71,7 @@ class DatabaseSeeder extends Seeder
             'campus_id' => 2,
         ]);
 
+
         $this->call([
             UserSeeder::class,
         ]);

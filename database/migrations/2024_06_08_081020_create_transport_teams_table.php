@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('transport_id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('team_role_id')->nullable();
             $table->timestamps();
         });
     }

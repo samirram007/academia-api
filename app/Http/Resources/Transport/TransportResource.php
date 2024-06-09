@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Transport;
 
 use App\Http\Resources\SuccessResource;
+use App\Http\Resources\TransportInsurance\TransportInsuranceResource;
 use App\Http\Resources\TransportType\TransportTypeResource;
 use App\Models\Transport;
 use Illuminate\Http\Request;
@@ -25,13 +26,10 @@ class TransportResource extends SuccessResource
             'chasis_no' => $this->chasis_no,
             'engine_no' => $this->engine_no,
             'capacity' => $this->capacity,
-            'insurance_no' => $this->insurance_no,
-            'insurance_date' => $this->insurance_date,
-            'insurance_valid_date' => $this->insurance_valid_date,
-            'insured_value' => $this->insured_value,
-            'purchase_cost' => $this->purchase_cost,
+            'transport_insurance_id' => $this->transport_insurance_id,
             'transport_type_id' => $this->transport_type_id,
             "transport_type"=>new TransportTypeResource($this->whenLoaded('transport_type')),
+            "transport_insurance"=>new TransportInsuranceResource($this->whenLoaded('transport_insurance')),
 
         ];
     }

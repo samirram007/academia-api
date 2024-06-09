@@ -35,6 +35,8 @@ class StudentSessionResource extends SuccessResource
             'is_promoted' => $this->is_promoted,
             'next_student_session_id' => $this->next_student_session_id,
             'previous_student_session_id' => $this->previous_student_session_id,
+            'is_idcard_printable' => $this->is_idcard_printable,
+            'idcard_print_count' => $this->idcard_print_count,
 
             'student'=> $this->whenNotNull(new StudentResource($this->whenLoaded('student'))),
             'academic_session'=> $this->whenNotNull(new AcademicSessionResource($this->whenLoaded('academic_session'))),

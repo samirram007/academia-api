@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Resources\TransportDocument;
+namespace App\Http\Resources\TransportInsurance;
 
 use App\Http\Resources\Document\DocumentResource;
 use App\Http\Resources\SuccessResource;
 use App\Http\Resources\Transport\TransportResource;
 use Illuminate\Http\Request;
 
-class TransportDocumentResource extends SuccessResource
+class TransportInsuranceResource extends SuccessResource
 {
     /**
      * Transform the resource into an array.

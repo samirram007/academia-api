@@ -10,7 +10,8 @@ class StudentSession extends Pivot
     public $incrementing = true;
     protected $fillable = [
          'student_id', 'academic_session_id','campus_id', 'academic_class_id','academic_standard_id','section_id',
-        'roll_no','status','is_promoted','previous_student_session_id','next_student_session_id'
+        'roll_no','status','is_promoted','previous_student_session_id','next_student_session_id',
+        'is_idcard_printable','idcard_print_count'
         // Add any additional fillable columns here
     ];
     function campus(){

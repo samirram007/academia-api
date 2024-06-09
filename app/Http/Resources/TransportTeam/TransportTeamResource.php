@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Resources\TransportDocument;
+namespace App\Http\Resources\TransportTeam;
 
 use App\Http\Resources\Document\DocumentResource;
 use App\Http\Resources\SuccessResource;
 use App\Http\Resources\Transport\TransportResource;
+use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 
-class TransportDocumentResource extends SuccessResource
+class TransportTeamResource extends SuccessResource
 {
     /**
      * Transform the resource into an array.
@@ -19,9 +20,10 @@ class TransportDocumentResource extends SuccessResource
         return [
             'name' => $this->name,
             'transport_id' => $this->transport_id,
-            'document_id' => $this->document_id,
+            'user_id' => $this->user_id,
+            'team_role_id' => $this->team_role_id,
             "transport"=>new TransportResource($this->whenLoaded('transport')),
-            "document"=>new DocumentResource($this->whenLoaded('document')),
+            "user"=>new UserResource($this->whenLoaded('user')),
 
         ];
     }

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\JourneyType;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,7 @@ class JourneyTypeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(JourneyType $journeyType)
+    public function show(JourneyType $transportFee)
     {
         //
     }
@@ -34,7 +35,7 @@ class JourneyTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, JourneyType $journeyType)
+    public function update(Request $request, JourneyType $transportFee)
     {
         //
     }
@@ -42,7 +43,7 @@ class JourneyTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(JourneyType $journeyType)
+    public function destroy(JourneyType $transportFee)
     {
         //
     }

@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Resources\Expense;
+namespace App\Http\Resources\TransportExpense;
 
 use App\Http\Resources\AcademicSession\AcademicSessionResource;
 use App\Http\Resources\Campus\CampusResource;
 use App\Http\Resources\Document\DocumentResource;
-use App\Http\Resources\ExpenseItem\ExpenseItemCollection;
 use App\Http\Resources\SuccessResource;
+use App\Http\Resources\TransportExpenseItem\TransportExpenseItemCollection;
 use App\Http\Resources\User\UserResource;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class ExpenseResource extends SuccessResource
+class TransportExpenseResource extends SuccessResource
 {
     /**
      * Transform the resource into an array.
@@ -39,7 +40,7 @@ class ExpenseResource extends SuccessResource
             "document" => new DocumentResource($this->whenLoaded('document')),
             "campus" => new CampusResource($this->whenLoaded('campus')),
              "user" => new UserResource($this->whenLoaded('user')),
-            "expense_items" => new  ExpenseItemCollection($this->whenLoaded('expense_items')),
+            "transport_expense_items" => new  TransportExpenseItemCollection($this->whenLoaded('transport_expense_items')),
         ];
     }
 }

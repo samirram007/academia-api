@@ -33,10 +33,23 @@ use App\Http\Controllers\Api\ExpenseHeadController;
 use App\Http\Controllers\Api\FeeItemController;
 use App\Http\Controllers\Api\FeeItemMonthController;
 use App\Http\Controllers\Api\FeeTemplateItemController;
+use App\Http\Controllers\Api\JourneyTypeController;
 use App\Http\Controllers\Api\MonthController;
 use App\Http\Controllers\Api\PromotionController;
 use App\Http\Controllers\Api\StudentSessionController;
 use App\Http\Controllers\Api\StudentIdCardController;
+use App\Http\Controllers\Api\TransportController;
+use App\Http\Controllers\Api\TransportDocumentController;
+use App\Http\Controllers\Api\TransportExpenseController;
+use App\Http\Controllers\Api\TransportFeeController;
+use App\Http\Controllers\Api\TransportInsuranceController;
+use App\Http\Controllers\Api\TransportPickupDropController;
+use App\Http\Controllers\Api\TransportPickupDropPointController;
+use App\Http\Controllers\Api\TransportSlotController;
+use App\Http\Controllers\Api\TransportTeamController;
+use App\Http\Controllers\Api\TransportTypeController;
+use App\Http\Controllers\Api\TransportUserController;
+use App\Models\JourneyType;
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
@@ -96,6 +109,20 @@ Route::middleware('auth:api')->group(function () {
     Route::post('student_sessions/enrollment', [StudentSessionController::class,'enrollment']);
     Route::put('student_sessions/enrollment/{id}', [StudentSessionController::class,'enrollmentUpdate']);
     Route::apiResource('promotions',PromotionController::class);
+    Route::apiResource('transports',TransportController::class);
+    Route::apiResource('transport_types',TransportTypeController::class);
+    Route::apiResource('transport_documents',TransportDocumentController::class);
+    Route::apiResource('transport_insurances',TransportInsuranceController::class);
+    Route::apiResource('transport_users',TransportUserController::class);
+    Route::apiResource('transport_teams',TransportTeamController::class);
+    Route::apiResource('transport_fees',TransportFeeController::class);
+    // Route::apiResource('transport_fee_items',TransportFeeItemController::class);
+    // Route::apiResource('transport_fee_item_months',TransportFeeItemMonthController::class);
+    Route::apiResource('transport_expenses',TransportExpenseController::class);
+    Route::apiResource('transport_slots',TransportSlotController::class);
+    Route::apiResource('transport_pickup_drop_points',TransportPickupDropPointController::class);
+    Route::apiResource('transport_pickup_drops',TransportPickupDropController::class);
+    Route::apiResource('journey_types',JourneyTypeController::class);
 
 
 
