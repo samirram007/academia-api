@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Transport;
+namespace App\Http\Requests\TransportUser;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTransportRequest extends FormRequest
+class StoreTransportUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,15 +22,13 @@ class StoreTransportRequest extends FormRequest
     public function rules(): array
     {
         return [
-           'name' => ['required','string','max:255'],
-            'registration_no' => ['sometimes','string','max:25'],
-            'registration_date'=>['sometimes','nullable','date'],
-            'registration_valid_date'=>['sometimes','nullable','date'],
-            'chasis_no' => ['sometimes','nullable','string','max:50'],
-            'engine_no' => ['sometimes','nullable','string','max:50'],
-            'color' => ['sometimes','nullable','string','max:25'],
-            'capacity' => ['sometimes','nullable','numeric'],
-            'transport_type_id' => ['required','exists:transport_types,id'],
+           'join_date' => ['sometimes','nullable','date'],
+            'is_free' => ['sometimes','nullable','boolean'],
+            'is_active' => ['sometimes','nullable','boolean'],
+            'monthly_charge' => ['sometimes','nullable','numeric'],
+            'transport_id' => ['required','exists:transports,id'],
+            'journey_type_id' => ['required','exists:journey_types,id'],
+            'user_id' => ['required','exists:users,id'],
         ];
     }
 }

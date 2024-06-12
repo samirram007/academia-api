@@ -21,6 +21,7 @@ class TransportUserResource extends SuccessResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'user_id' => $this->user_id,
             'student_session_id' => $this->student_session_id,
             'transport_id' => $this->transport_id,

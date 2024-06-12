@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\ExpenseItem;
+namespace App\Http\Resources\TransportExpenseItem;
 
 use App\Http\Resources\ExpenseHead\ExpenseHeadResource;
 use App\Http\Resources\SuccessResource;

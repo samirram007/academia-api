@@ -22,7 +22,15 @@ class UpdateTransportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['sometimes','required','string','max:255'],
+            'registration_no' => ['sometimes','string','max:25'],
+            'registration_date'=>['sometimes','nullable','date'],
+            'registration_valid_date'=>['sometimes','nullable','date'],
+            'chasis_no' => ['sometimes','nullable','string','max:50'],
+            'engine_no' => ['sometimes','nullable','string','max:50'],
+            'color' => ['sometimes','nullable','string','max:25'],
+            'capacity' => ['sometimes','nullable','numeric'],
+            'transport_type_id' => ['required','exists:transport_types,id'],
         ];
     }
 }

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->bigInteger('next_academic_session_id')->nullable();
             $table->integer('current_fee_no')->default(1);
             $table->integer('current_expense_no')->default(1);
+            $table->integer('current_transport_expense_no')->default(1);
             $table->boolean('is_current')->default(false);
             $table->timestamps();
         });

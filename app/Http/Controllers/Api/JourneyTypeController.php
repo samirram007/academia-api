@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\JourneyType\JourneyTypeCollection;
 use App\Models\JourneyType;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,7 @@ class JourneyTypeController extends Controller
      */
     public function index()
     {
-        //
+        return new JourneyTypeCollection(JourneyType::all());
     }
 
     /**

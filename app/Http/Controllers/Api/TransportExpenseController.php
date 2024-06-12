@@ -17,17 +17,18 @@ class TransportExpenseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    protected $userLoader = ['campus', 'academic_session', 'expense_items', 'expense_items.expense_head'];
+    protected $userLoader = ['campus', 'academic_session',
+     'transport_expense_items', 'transport_expense_items.expense_head'];
     public function index(Request $request)
     {
         $message = [];
-
-        if (!$request->has('campus_id')) {
-            array_push($message, 'Please provide campus_id');
-        }
-        if (!$request->has('academic_session_id')) {
-            array_push($message, 'Please provide academic_session_id');
-        }
+// dd( TransportExpense::all());
+        // if (!$request->has('campus_id')) {
+        //     array_push($message, 'Please provide campus_id');
+        // }
+        // if (!$request->has('academic_session_id')) {
+        //     array_push($message, 'Please provide academic_session_id');
+        // }
         if ($message) {
             return response()->json(
                 [
@@ -36,9 +37,10 @@ class TransportExpenseController extends Controller
                 ]
                 , 400);
         }
+
+            // ->where('campus_id', $request->input('campus_id'))
+            // ->where('academic_session_id', $request->input('academic_session_id'))
         $expenses = TransportExpense::with($this->userLoader)
-            ->where('campus_id', $request->input('campus_id'))
-            ->where('academic_session_id', $request->input('academic_session_id'))
             ->whereBetween('expense_date',[$request->input('from'),$request->input('to')])
             ->get();
         //dd($expenses);
@@ -54,13 +56,13 @@ class TransportExpenseController extends Controller
         //\DB::transaction(function () use ($request) {
             $data = $request->validated();
             $academicSession = AcademicSession::where('id', $request['academic_session_id'])->first();
-            $data['expense_no'] = $academicSession->current_expense_no;
+            $data['expense_no'] = $academicSession->current_transport_expense_no;
             $expense = TransportExpense::create($data);
             //  dd($data['expense_items']);
-            foreach ($data['expense_items'] as $key => $expenseItem) {
+            foreach ($data['transport_expense_items'] as $key => $expenseItem) {
 
                 $expense_item = new TransportExpenseItem();
-                $expense_item->expense_id = $expense->id;
+                $expense_item->transport_expense_id = $expense->id;
                 $expense_item->expense_head_id = $expenseItem['expense_head_id'];
                 $expense_item->quantity = $expenseItem['quantity'];
 
@@ -78,9 +80,9 @@ class TransportExpenseController extends Controller
     public function GetExpenseNo($academic_session_id)
     {
         $academicSession = AcademicSession::where('id', $academic_session_id)->first();
-        $current_expense_no = $academicSession;
+        $current_transport_expense_no = $academicSession;
 
-        return $current_expense_no;
+        return $current_transport_expense_no;
 
     }
 

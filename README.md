@@ -1,2 +1,3 @@
 ### passport install
--php artisan passport:client --personal
+# php artisan passport:client --personal
+

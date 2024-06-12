@@ -114,6 +114,8 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('transport_documents',TransportDocumentController::class);
     Route::apiResource('transport_insurances',TransportInsuranceController::class);
     Route::apiResource('transport_users',TransportUserController::class);
+    Route::get('search_users_for_transport',[TransportUserController::class,'search_users_for_transport']);
+
     Route::apiResource('transport_teams',TransportTeamController::class);
     Route::apiResource('transport_fees',TransportFeeController::class);
     // Route::apiResource('transport_fee_items',TransportFeeItemController::class);

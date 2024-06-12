@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Transport\StoreTransportRequest;
+use App\Http\Requests\Transport\UpdateTransportRequest;
 use App\Http\Resources\Transport\TransportCollection;
 use App\Http\Resources\Transport\TransportResource;
 use App\Models\Transport;
@@ -10,20 +12,21 @@ use Illuminate\Http\Request;
 
 class TransportController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $lazyLoader=['transport_type'];
     public function index()
     {
-        return new TransportCollection(Transport::all());
+        return new TransportCollection(Transport::with($this->lazyLoader)->get());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTransportRequest $request)
     {
-        //
+        $data = $request->validated();
+        $subject = Transport::create($data);
+        return new TransportResource($subject->load($this->lazyLoader));
+
     }
 
     /**
@@ -37,9 +40,11 @@ class TransportController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Transport $transportFee)
+    public function update(UpdateTransportRequest $request, Transport $transport)
     {
-        //
+        $data = $request->validated();
+        $transport->update($data);
+        return new TransportResource($transport->load($this->lazyLoader));
     }
 
     /**
