@@ -3,7 +3,7 @@
 namespace App\Http\Requests\ExpenseHead;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Validation\Rule;
 class UpdateExpenseHeadRequest extends FormRequest
 {
     /**
@@ -22,7 +22,8 @@ class UpdateExpenseHeadRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required','string','max:255','unique:expense_heads,name'.$this->id],
+            'name' => ['required','string','max:255',Rule::unique('expense_heads', 'name')->ignore($this->id)],
+            'expense_group_id' => ['sometimes','nullable','numeric',],
         ];
     }
 }

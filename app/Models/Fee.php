@@ -22,6 +22,8 @@ class Fee extends Model
         'paid_amount',
         'balance_amount',
         'payment_mode',
+         'is_deleted',
+         'note'
 
     ];
     protected $hidden = [
@@ -49,6 +51,9 @@ class Fee extends Model
     }
     public function fee_items(){
         return $this->hasMany(FeeItem::class);
+    }
+    public function fee_item_months(){
+        return $this->hasMany(FeeItemMonth::class);
     }
 
 

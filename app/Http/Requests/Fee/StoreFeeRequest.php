@@ -36,6 +36,7 @@ class StoreFeeRequest extends FormRequest
             'paid_amount'=> ['sometimes','required', 'numeric'],
             'balance_amount'=> ['sometimes','required', 'numeric'],
             'payment_mode'=> ['sometimes','required','string','max:255'],
+            'note'=> ['sometimes','nullable','string','max:255'],
             'fee_items'=> ['sometimes','required', 'array'],
             'fee_items.*.fee_head_id'=> ['required', 'exists:fee_heads,id'],
             'fee_items.*.quantity'=> ['required', 'numeric'],

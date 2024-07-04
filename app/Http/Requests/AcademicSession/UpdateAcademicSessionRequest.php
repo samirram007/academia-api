@@ -22,7 +22,6 @@ class UpdateAcademicSessionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'campus_id' => ['required', 'numeric', 'exists:campuses,id'],
             'session' => ['sometimes', 'required'],
             'start_date' => ['sometimes', 'nullable', 'date'],
             'end_date' => ['sometimes', 'nullable', 'date', 'after:start_date'],

@@ -10,5 +10,10 @@ class ExpenseHead extends Model
     use  HasFactory;
     protected $fillable = [
         'name',
+        'expense_group_id',
+
     ];
+    public function expense_group() {
+        return $this->belongsTo(ExpenseGroup::class);
+    }
 }

@@ -47,6 +47,7 @@ class CampusController extends Controller
     {
         $data = $request->validated();
         $campus->update($data);
+
         return new CampusResource($campus->load($this->userLoader));
     }
 

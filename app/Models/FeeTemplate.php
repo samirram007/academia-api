@@ -13,21 +13,23 @@ class FeeTemplate extends Model
         'name',
         'is_active',
         'campus_id',
-        'academic_session_id',
-        'academic_class_id'
+        'academic_class_id',
+        'is_active'
     ];
 
     public function campus() {
         return $this->belongsTo(Campus::class);
         }
-    public function academic_session() {
-        return $this->belongsTo(AcademicSession::class);
-        }
+
         public function academic_class() {
         return $this->belongsTo(AcademicClass::class);
         }
      public function fee_template_items() {
         return $this->hasMany(FeeTemplateItem::class);
         }
+     public function fees() {
+        return $this->hasMany(Fee::class);
+        }
+
 
 }

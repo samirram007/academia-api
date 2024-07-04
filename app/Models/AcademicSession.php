@@ -13,7 +13,6 @@ class AcademicSession extends Model
     use HasApiTokens,HasFactory;
 
     protected $fillable = [
-        'campus_id',
         'session',
         'start_date',
         'end_date',
@@ -21,14 +20,12 @@ class AcademicSession extends Model
         'previous_academic_session_id',
         'next_academic_session_id',
      ];
-     public function campus() {
-        return $this->belongsTo(Campus::class);
-     }
      public function previous_academic_session() {
         return $this->belongsTo(AcademicSession::class, 'previous_academic_session_id');
      }
      public function next_academic_session() {
         return $this->belongsTo(AcademicSession::class, 'next_academic_session_id');
      }
+
 
 }

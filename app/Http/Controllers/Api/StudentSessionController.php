@@ -9,6 +9,7 @@ use App\Http\Resources\StudentSession\StudentSessionResource;
 use App\Models\AcademicClass;
 use App\Models\AcademicStandard;
 use App\Models\StudentSession;
+use App\Models\TransportUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -90,7 +91,13 @@ class StudentSessionController extends Controller
             $user->campus_id=$request->input('campus_id');
             $user->update();
         }
-        // dd($data,$user);
+        $transportUser=TransportUser::where('user_id',$request->input('student_id'))
+        ->where('is_active',1)
+        ->first();
+        if($transportUser){
+            $transportUser->student_session_id=$studentSessions->id;
+            $transportUser->save();
+        }
         return new StudentSessionResource($studentSessions->load($this->foreignLoader));
     }
     public function enrollmentUpdate(Request $request,$id)
@@ -115,6 +122,13 @@ class StudentSessionController extends Controller
             $user->academic_class_id=$request->input('academic_class_id');
             $user->campus_id=$request->input('campus_id');
             $user->update();
+        }
+        $transportUser=TransportUser::where('user_id',$request->input('student_id'))
+        ->where('is_active',1)
+        ->first();
+        if($transportUser){
+            $transportUser->student_session_id=$studentSessions->id;
+            $transportUser->save();
         }
         // dd($data,$user);
         return new StudentSessionResource($studentSessions->load($this->foreignLoader));

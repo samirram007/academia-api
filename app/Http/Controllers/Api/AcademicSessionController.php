@@ -15,26 +15,26 @@ class AcademicSessionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    protected $userLoader=['campus','previous_academic_session','next_academic_session'];
+    protected $userLoader=['previous_academic_session','next_academic_session'];
     public function index(Request $request)
     {
         $message=[];
 
 
-        if(!$request->has('campus_id')){
-            array_push($message,'Please provide campus_id');
-        }
-        if($message){
-            return response()->json(
-                [
-                   'status'=>false,
-                   'message' => $message
-                ]
-           , 400);
-        }
+        // if(!$request->has('campus_id')){
+        //     array_push($message,'Please provide campus_id');
+        // }
+        // if($message){
+        //     return response()->json(
+        //         [
+        //            'status'=>false,
+        //            'message' => $message
+        //         ]
+        //    , 400);
+        // }
         return new AcademicSessionCollection(
             AcademicSession::with($this->userLoader)
-            ->where('campus_id',$request->input('campus_id'))
+            ->orderBy('id','desc')
             ->get());
     }
 

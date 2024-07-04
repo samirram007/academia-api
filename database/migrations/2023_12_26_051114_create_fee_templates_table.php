@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('fee_heads', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->unsignedBigInteger('income_group_id')->nullable();
             $table->timestamps();
         });
         Schema::create('fee_templates', function (Blueprint $table) {

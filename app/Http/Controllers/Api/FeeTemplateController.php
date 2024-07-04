@@ -15,19 +15,17 @@ class FeeTemplateController extends Controller
     /**
      * Display a listing of the resource.
      */
-    protected $userLoader=['campus','academic_session','academic_class','fee_template_items','fee_template_items.fee_head'];
+    protected $userLoader=['campus','academic_class','fee_template_items','fee_template_items.fee_head'];
 
     public function index(Request $request)
     {
 
         $message=[];
 
-        if(!$request->has('academic_session_id')){
-           array_push($message,'Please provide academic session');
-        }
-        if(!$request->has('academic_class_id')){
-            array_push($message,'Please provide academic Class');
-        }
+        // if(!$request->has('academic_session_id')){
+        //    array_push($message,'Please provide academic session');
+        // }
+
         if($message){
             return response()->json(
                 [
@@ -36,12 +34,18 @@ class FeeTemplateController extends Controller
                 ]
            , 400);
         }
-
+// dd(FeeTemplate::with($this->userLoader)
+// ->withCount('fees')
+// ->where('academic_class_id',$request->input('academic_class_id'))
+// ->get()->toArray());
         $thisData= new FeeTemplateCollection(
             FeeTemplate::with($this->userLoader)
-            ->where('academic_session_id',$request->input('academic_session_id'))
+            ->withCount('fees')
             ->where('academic_class_id',$request->input('academic_class_id'))
+            ->orderBy('is_active','desc')
+            ->orderBy('name','asc')
             ->get());
+
 
             return  $thisData;
     }

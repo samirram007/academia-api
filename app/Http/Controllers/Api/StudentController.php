@@ -12,16 +12,40 @@ use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    protected $userLoader = ['academic_session', 'academic_class', 'campus',
-     'address', 'address.state', 'address.country', 'addresses', 'addresses.state', 'addresses.country',
-        'designation', 'department', 'profile_document', 'guardians',
-        'student_sessions', 'student_sessions.academic_class',
-        'student_sessions.academic_session', 'student_sessions.section','student_sessions.fee_item_months','student_sessions.fee_item_months.month'];
+        protected $userLoader;
+        function __construct()
+        {
 
-    protected $foreignLoader = ['student', 'student.profile_document', 'academic_session', 'academic_class', 'academic_standard'];
+            $this->userLoader= [
+                'academic_session',
+                'academic_class',
+                'campus',
+                'address' => function ($query) {
+                    $query->with(['state', 'country']);
+                },
+                'addresses' => function ($query) {
+                    $query->with(['state', 'country']);
+                },
+                'designation',
+                'department',
+                'profile_document',
+                'guardians',
+                'student_sessions' => function ($query) {
+                    $query->with([
+                        'campus',
+                        'academic_class',
+                        'academic_session',
+                        'section',
+                        'fee_item_months' => function ($query) {
+                            $query->where('is_deleted', '!=', 1)
+                                  ->with(['month']);
+                        }
+                    ]);
+                }
+            ];
+        }
+        protected $foreignLoader = ['student', 'student.profile_document', 'academic_session', 'academic_class', 'academic_standard'];
+
     public function index(Request $request)
     {
         $message = [];
@@ -32,12 +56,12 @@ class StudentController extends Controller
 
 
         if ($request->input('filter_option') == 'active') {
-            if (!$request->has('campus_id')) {
-                array_push($message, 'Please provide campus');
-            }
 
             if (!$request->has('academic_session_id')) {
                 array_push($message, 'Please provide academic session');
+            }
+            if (!$request->has('academic_class_id')) {
+                array_push($message, 'Please provide academic class');
             }
             if ($message) {
                 return response()->json(
@@ -53,7 +77,8 @@ class StudentController extends Controller
                 ->whereIn('id', function ($query) use ($request) {
                     $query->select('student_id')
                         ->from('student_sessions')
-                        ->whereIn('academic_session_id', [$request->input('academic_session_id')]);
+                        ->whereIn('academic_session_id', [$request->input('academic_session_id')])
+                        ->whereIn('academic_class_id', [$request->input('academic_class_id')]);
                 })->get();
             return new StudentCollection($users);
         } elseif ($request->input('filter_option') == 'admission') {

@@ -11,5 +11,9 @@ class FeeHead extends Model
     use  HasFactory;
     protected $fillable = [
         'name',
+        'income_group_id',
     ];
+    public function income_group() {
+        return $this->belongsTo(IncomeGroup::class);
+    }
 }

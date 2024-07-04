@@ -40,6 +40,8 @@ class FeeResource extends SuccessResource
             'balance_amount' => $this->balance_amount,
             'payment_mode' => $this->payment_mode,
             'paid_amount' => $this->paid_amount,
+            'is_deleted'=>$this->is_deleted,
+            'note'=>$this->note,
             'fee_template' => new FeeTemplateResource($this->whenLoaded('fee_template')),
             "academic_session" => new AcademicSessionResource($this->whenLoaded('academic_session')),
             "academic_class" => new AcademicClassResource($this->whenLoaded('academic_class')),

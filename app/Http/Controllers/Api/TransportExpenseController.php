@@ -23,12 +23,12 @@ class TransportExpenseController extends Controller
     {
         $message = [];
 // dd( TransportExpense::all());
-        // if (!$request->has('campus_id')) {
-        //     array_push($message, 'Please provide campus_id');
-        // }
-        // if (!$request->has('academic_session_id')) {
-        //     array_push($message, 'Please provide academic_session_id');
-        // }
+        if (!$request->has('campus_id')) {
+            array_push($message, 'Please provide campus_id');
+        }
+        if (!$request->has('academic_session_id')) {
+            array_push($message, 'Please provide academic_session_id');
+        }
         if ($message) {
             return response()->json(
                 [
@@ -41,6 +41,8 @@ class TransportExpenseController extends Controller
             // ->where('campus_id', $request->input('campus_id'))
             // ->where('academic_session_id', $request->input('academic_session_id'))
         $expenses = TransportExpense::with($this->userLoader)
+            ->where('campus_id',$request->input('campus_id'))
+            ->where('academic_session_id',$request->input('academic_session_id'))
             ->whereBetween('expense_date',[$request->input('from'),$request->input('to')])
             ->get();
         //dd($expenses);

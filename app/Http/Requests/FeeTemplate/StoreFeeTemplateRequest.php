@@ -25,7 +25,6 @@ class StoreFeeTemplateRequest extends FormRequest
             'name' => ['required','string','max:255'],
             'is_active'=>'sometimes|boolean',
             'campus_id'=>'required|exists:campuses,id',
-            'academic_session_id'=>'required|exists:academic_sessions,id',
             'academic_class_id'=>'required|exists:academic_classes,id'
         ];
     }

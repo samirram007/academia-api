@@ -29,10 +29,12 @@ use App\Http\Controllers\Api\EducationBoardController;
 use App\Http\Controllers\Api\AcademicSessionController;
 use App\Http\Controllers\Api\AcademicStandardController;
 use App\Http\Controllers\Api\ExpenseController;
+use App\Http\Controllers\Api\ExpenseGroupController;
 use App\Http\Controllers\Api\ExpenseHeadController;
 use App\Http\Controllers\Api\FeeItemController;
 use App\Http\Controllers\Api\FeeItemMonthController;
 use App\Http\Controllers\Api\FeeTemplateItemController;
+use App\Http\Controllers\Api\IncomeGroupController;
 use App\Http\Controllers\Api\JourneyTypeController;
 use App\Http\Controllers\Api\MonthController;
 use App\Http\Controllers\Api\PromotionController;
@@ -88,6 +90,7 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('subject_groups', SubjectGroupController::class);
     Route::apiResource('subjects', SubjectController::class);
 
+    Route::apiResource('income_groups', IncomeGroupController::class);
     Route::apiResource('fee_heads', FeeHeadController::class);
     Route::apiResource('fee_templates', FeeTemplateController::class);
     Route::post('fee_templates/clone/{id}', [FeeTemplateController::class,'clone']);
@@ -97,6 +100,7 @@ Route::middleware('auth:api')->group(function () {
 
 
     Route::apiResource('expenses', ExpenseController::class);
+    Route::apiResource('expense_groups', ExpenseGroupController::class);
     Route::apiResource('expense_heads', ExpenseHeadController::class);
 
 
@@ -115,6 +119,7 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('transport_insurances',TransportInsuranceController::class);
     Route::apiResource('transport_users',TransportUserController::class);
     Route::get('search_users_for_transport',[TransportUserController::class,'search_users_for_transport']);
+    Route::get('search_transport_users_for_fees',[TransportUserController::class,'search_transport_users_for_fees']);
 
     Route::apiResource('transport_teams',TransportTeamController::class);
     Route::apiResource('transport_fees',TransportFeeController::class);

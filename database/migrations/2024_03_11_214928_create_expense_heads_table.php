@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('expense_heads', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->unsignedBigInteger('expense_group_id')->nullable();
             $table->timestamps();
         });
     }

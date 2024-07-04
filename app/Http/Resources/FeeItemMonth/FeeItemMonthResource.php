@@ -23,6 +23,7 @@ class FeeItemMonthResource extends SuccessResource
             'student_session_id' => $this->student_session_id,
             'month_id' => $this->month_id,
             'amount' => $this->amount,
+            'is_deleted'=>$this->is_deleted,
             "month"=>new MonthResource($this->whenLoaded('month')),
 
         ];

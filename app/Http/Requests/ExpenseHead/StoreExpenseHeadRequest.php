@@ -23,6 +23,7 @@ class StoreExpenseHeadRequest extends FormRequest
     {
         return [
             'name' => ['required','string','max:255','unique:expense_heads,name'],
+            'expense_group_id' => ['sometimes','nullable','numeric',],
         ];
 
     }

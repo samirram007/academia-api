@@ -129,7 +129,17 @@ class User extends Authenticatable
     {
         return $this->hasMany(StudentSession::class, 'student_id', 'id');
     }
-
+    // public function student_session()
+    // {
+    //     $allSessions=$this->hasMany(StudentSession::class, 'student_id', 'id');
+    //     return $allSessions->latest();
+    // }
+    public function transport_fees(){
+        return $this->hasMany(TransportFee::class,'user_id');
+    }
+    public function transport_user(){
+        return $this->hasOne(TransportUser::class,'user_id');
+    }
     public function guardians()
     {
         return $this->belongsToMany(User::class, 'student_guardian', 'student_id', 'guardian_id');

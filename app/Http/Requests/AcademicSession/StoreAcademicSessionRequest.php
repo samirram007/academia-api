@@ -23,11 +23,7 @@ class StoreAcademicSessionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'campus_id' => ['required', 'numeric', 'exists:campuses,id'],
-            'session' => [
-                'required',
-                Rule::unique('academic_sessions', 'session')->where('campus_id', $this->input('campus_id'))
-            ],
+            'session' => ['required'  ],
             'start_date' => ['required', 'date'],
             'end_date' => ['sometimes', 'nullable', 'date', 'after:start_date'],
             'previous_academic_session_id' => ['sometimes', 'nullable', 'numeric', 'exists:academic_sessions,id'],

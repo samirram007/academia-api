@@ -24,11 +24,10 @@ class FeeTemplateResource extends SuccessResource
             'is_active'=>$this->is_active,
             'campus_id'=>$this->campus_id,
             'academic_class_id'=>$this->academic_class_id,
-            'academic_session_id'=>$this->academic_session_id,
-            'academic_session'=> new AcademicSessionResource($this->whenLoaded('academic_session')),
             'academic_class'=>new AcademicClassResource($this->whenLoaded('academic_class')),
             'campus'=>new CampusResource($this->whenLoaded('campus')),
             'fee_template_items'=>new FeeTemplateItemCollection($this->whenLoaded('fee_template_items')),
+            'fees_count'=>$this->fees_count,
 
 
 

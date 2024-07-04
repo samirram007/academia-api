@@ -53,5 +53,8 @@ class TransportUser extends Model
     public function journey_type(){
         return $this->belongsTo(JourneyType::class);
     }
+    public function transport_fees(){
+        return $this->hasMany(TransportFee::class,'user_id');
+    }
 
 }

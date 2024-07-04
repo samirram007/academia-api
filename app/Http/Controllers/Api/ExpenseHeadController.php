@@ -17,7 +17,7 @@ class ExpenseHeadController extends Controller
      */
     public function index()
     {
-        return new ExpenseHeadCollection(ExpenseHead::all());
+        return new ExpenseHeadCollection(ExpenseHead::with(['expense_group'])->get());
     }
 
     /**

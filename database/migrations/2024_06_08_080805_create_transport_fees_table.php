@@ -38,6 +38,7 @@ return new class extends Migration
         Schema::create('transport_fee_item_months', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('transport_fee_item_id');
+            $table->unsignedBigInteger('academic_session_id');
             $table->unsignedBigInteger('month_id');
             $table->decimal('amount', 10, 2);
             $table->timestamps();

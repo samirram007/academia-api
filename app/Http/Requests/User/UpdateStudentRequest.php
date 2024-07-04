@@ -37,7 +37,7 @@ class UpdateStudentRequest extends FormRequest
             'user_type' => ['sometimes', 'required', Rule::in(UserTypeEnum::cases())],
             'username' => 'sometimes|string|unique:users,username,' . $this->route()->student,
             'email' => 'sometimes|email',
-            'code' => 'sometimes|string|max:50|unique:users,code',
+            'code' => 'sometimes|string|max:50|unique:users,code,'. $this->route()->student,
             'contact_no' => 'sometimes|required|max:10',
             'status' => ['sometimes', 'required', Rule::in(UserStatusEnum::cases())],
             'emergency_contact_name' => 'sometimes|required|string|max:100',

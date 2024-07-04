@@ -17,7 +17,7 @@ class FeeHeadController extends Controller
      */
     public function index()
     {
-        return new FeeHeadCollection(FeeHead::all());
+        return new FeeHeadCollection(FeeHead::with(['income_group'])->get());
     }
 
     /**
@@ -43,6 +43,7 @@ class FeeHeadController extends Controller
      */
     public function update(UpdateFeeHeadRequest $request, FeeHead $fee_head)
     {
+
         $data = $request->validated();
         $fee_head->update($data);
         return new FeeHeadResource($fee_head);
