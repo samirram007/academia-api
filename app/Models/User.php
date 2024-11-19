@@ -62,6 +62,8 @@ class User extends Authenticatable
         'academic_class_id',
         'admission_no',
         'admission_date',
+        'education',
+        'occupation'
 
     ];
 

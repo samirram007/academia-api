@@ -66,6 +66,8 @@ class UserResource extends SuccessResource
             'academic_session_id'=>$this->whenNotNull($this->academic_session_id),
             'academic_class_id'=>$this->whenNotNull($this->academic_class_id),
             'guardians'=>new UserCollection($this->whenLoaded('guardians')),
+            'education'=>$this->whenNotNull($this->education),
+            'occupation'=>$this->whenNotNull($this->occupation)
         ];
 
 
@@ -74,4 +76,3 @@ class UserResource extends SuccessResource
 
 
 }
-

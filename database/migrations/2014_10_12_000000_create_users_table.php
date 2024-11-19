@@ -65,6 +65,8 @@ return new class extends Migration
             $table->string('bank_branch',100)->nullable();
             $table->string('admission_no',100)->nullable();
             $table->date('admission_date')->nullable();
+            $table->string('education',255)->nullable();
+            $table->string('occupation',255)->nullable();
             $table->unsignedBigInteger('academic_session_id')->nullable();
             $table->unsignedBigInteger('campus_id')->nullable();
             $table->unsignedBigInteger('academic_class_id')->nullable();
@@ -90,4 +92,3 @@ return new class extends Migration
         Schema::dropIfExists('student_guardian');
     }
 };
-
