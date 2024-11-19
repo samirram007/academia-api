@@ -14,10 +14,12 @@ class Address extends Model
     use HasApiTokens,HasFactory;
     protected $fillable = [
         'user_id',
+        'house_no',
         'address_type',
         'address_line_1',
         'address_line_2',
         'city',
+        'village',
         'post_office',
         'rail_station',
         'police_station',
@@ -28,10 +30,10 @@ class Address extends Model
         'latitude',
         'longitude',
     ];
-    // public function user()
-    // {
-    //     return $this->belongsTo(User::class);
-    // }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     public function state()
     {
         return $this->belongsTo(State::class )->withDefault();
@@ -40,9 +42,27 @@ class Address extends Model
     {
         return $this->belongsTo(Country::class);
     }
-    public static function display()
+    public function display()
     {
-        return "Full Address";
+        $parts = [
+            $this->house_no,
+            $this->address_line_1,
+            $this->address_line_2,
+            $this->city,
+            $this->village,
+            $this->post_office,
+            $this->rail_station,
+            $this->police_station,
+            $this->district,
+            $this->pincode,
+            $this->state?->name, // Use null-safe operator for relationships
+            $this->country?->name, // Use null-safe operator for relationships
+        ];
+         // Filter out null or empty values
+    $filteredParts = array_filter($parts, fn($part) => !empty($part));
+
+    // Join the non-empty parts with ', '
+    return implode(', ', $filteredParts);
     }
 
 }

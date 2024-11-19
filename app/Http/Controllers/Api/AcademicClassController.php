@@ -32,7 +32,7 @@ class AcademicClassController extends Controller
         //         ]
         //    , 400);
         // }
-        $data = AcademicClass::with($this->userLoader)->orderBy('academic_standard_id', 'asc')->get();
+        $data = AcademicClass::with($this->userLoader)->orderBy('campus_id', 'asc')->get();
         // ->whereIn('academic_standard_id', function ($query) use ($request) {
         //     $query->select('id')
         //         ->from('academic_standards')

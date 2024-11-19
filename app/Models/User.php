@@ -96,10 +96,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Address::class);
     }
-    public function address()
-    {
-        return $this->belongsTo(Address::class);
-    }
+    // public function address()
+    // {
+    //     return $this->belongsTo(Address::class);
+    // }
     public function campus()
     {
         return $this->belongsTo(Campus::class);
@@ -129,6 +129,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(StudentSession::class, 'student_id', 'id');
     }
+
     // public function student_session()
     // {
     //     $allSessions=$this->hasMany(StudentSession::class, 'student_id', 'id');

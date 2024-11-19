@@ -32,7 +32,7 @@ class StudentResource extends SuccessResource
             'username' => $this->username,
             'user_type' => $this->user_type,
             'addresses'=>  new AddressCollection($this->whenLoaded('addresses')),
-            'address'=>  new AddressResource($this->whenLoaded('address')),
+            // 'address'=>  new AddressResource($this->whenLoaded('address')),
             'code'=>$this->whenNotNull($this->code),
             'name'=>$this->name,
             'email'=>$this->whenNotNull($this->email),
@@ -52,7 +52,7 @@ class StudentResource extends SuccessResource
             'address_id'=>$this->whenNotNull($this->address_id),
             'designation_id'=>$this->whenNotNull($this->designation_id),
             'department_id'=>$this->whenNotNull($this->department_id),
-            'gender'=>$this->whenNotNull($this->gender),
+
             'doj'=>$this->whenNotNull($this->doj),
             'dob'=>$this->whenNotNull($this->dob),
             'aadhaar_no'=>$this->whenNotNull($this->aadhaar_no),
@@ -90,4 +90,3 @@ class StudentResource extends SuccessResource
 
 
 }
-

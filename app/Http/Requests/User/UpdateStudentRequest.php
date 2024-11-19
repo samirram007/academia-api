@@ -30,14 +30,15 @@ class UpdateStudentRequest extends FormRequest
      */
     public function rules(): array
     {
-      //  dd($this->route()->student);
-        return [
+
+        $rules= [
 
             'name' => 'sometimes|string|max:255',
             'user_type' => ['sometimes', 'required', Rule::in(UserTypeEnum::cases())],
             'username' => 'sometimes|string|unique:users,username,' . $this->route()->student,
             'email' => 'sometimes|email',
-            'code' => 'sometimes|string|max:50|unique:users,code,'. $this->route()->student,
+            // 'code' => 'sometimes|string|max:50|unique:users,code,'. $this->route()->student,
+            'code' => 'sometimes|required|string|max:100',
             'contact_no' => 'sometimes|required|max:10',
             'status' => ['sometimes', 'required', Rule::in(UserStatusEnum::cases())],
             'emergency_contact_name' => 'sometimes|required|string|max:100',
@@ -72,6 +73,8 @@ class UpdateStudentRequest extends FormRequest
             'academic_session_id'=>'sometimes|nullable|exists:academic_sessions,id',
             'academic_class_id'=>'sometimes|nullable|exists:academic_classes,id',
         ];
+
+        return $rules;
     }
     protected function prepareForValidation()
     {

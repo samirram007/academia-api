@@ -22,7 +22,7 @@ class UniqueDocumentFolderCombination implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        dd(count($value));
+
         if (!is_array($value) || !array_key_exists('document_id', $value) || !array_key_exists('folder_id', $value)) {
             // If the value is not an array or does not have the required keys, fail validation
             $fail('Invalid input format for document_id and folder_id.');

@@ -20,9 +20,6 @@ class StudentController extends Controller
                 'academic_session',
                 'academic_class',
                 'campus',
-                'address' => function ($query) {
-                    $query->with(['state', 'country']);
-                },
                 'addresses' => function ($query) {
                     $query->with(['state', 'country']);
                 },
@@ -149,6 +146,7 @@ class StudentController extends Controller
     public function show($id)
     {
         $user = User::find($id);
+
         return new StudentResource($user->load($this->userLoader));
     }
 

@@ -30,12 +30,14 @@ class AddressResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'address_id' => $this->id,
+            'id' => $this->id,
             'user_id' => $this->user_id,
+            'house_no' => $this->whenNotNull($this->house_no),
             'address_type' => $this->whenNotNull($this->address_type),
             'address_line_1' => $this->whenNotNull($this->address_line_1),
             'address_line_2' => $this->whenNotNull($this->address_line_2),
             'city' => $this->whenNotNull($this->city),
+            'village' => $this->whenNotNull($this->village),
             'post_office' => $this->whenNotNull($this->post_office),
             'rail_station' => $this->whenNotNull($this->rail_station),
             'police_station' => $this->whenNotNull($this->police_station),

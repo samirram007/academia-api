@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\JourneyType;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\FeeController;
@@ -7,51 +8,51 @@ use App\Http\Controllers\Api\EnumController;
 use App\Http\Controllers\Api\RoomController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\FloorController;
+use App\Http\Controllers\Api\MonthController;
 use App\Http\Controllers\Api\CampusController;
+use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\SchoolController;
 use App\Http\Controllers\Api\AddressController;
+use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\FeeHeadController;
+use App\Http\Controllers\Api\FeeItemController;
 use App\Http\Controllers\Api\SectionController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\SubjectController;
 use App\Http\Controllers\Api\TeacherController;
+
 use App\Http\Controllers\Api\BuildingController;
 use App\Http\Controllers\Api\DocumentController;
 use App\Http\Controllers\Api\GuardianController;
+use App\Http\Controllers\Api\PromotionController;
+use App\Http\Controllers\Api\TransportController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\SchoolTypeController;
-
 use App\Http\Controllers\Api\DesignationController;
-use App\Http\Controllers\Api\FeeTemplateController;
-use App\Http\Controllers\Api\SubjectGroupController;
-use App\Http\Controllers\Api\AcademicClassController;
-use App\Http\Controllers\Api\EducationBoardController;
-use App\Http\Controllers\Api\AcademicSessionController;
-use App\Http\Controllers\Api\AcademicStandardController;
-use App\Http\Controllers\Api\ExpenseController;
-use App\Http\Controllers\Api\ExpenseGroupController;
 use App\Http\Controllers\Api\ExpenseHeadController;
-use App\Http\Controllers\Api\FeeItemController;
-use App\Http\Controllers\Api\FeeItemMonthController;
-use App\Http\Controllers\Api\FeeTemplateItemController;
+use App\Http\Controllers\Api\FeeTemplateController;
 use App\Http\Controllers\Api\IncomeGroupController;
 use App\Http\Controllers\Api\JourneyTypeController;
-use App\Http\Controllers\Api\MonthController;
-use App\Http\Controllers\Api\PromotionController;
-use App\Http\Controllers\Api\StudentSessionController;
-use App\Http\Controllers\Api\StudentIdCardController;
-use App\Http\Controllers\Api\TransportController;
-use App\Http\Controllers\Api\TransportDocumentController;
-use App\Http\Controllers\Api\TransportExpenseController;
+use App\Http\Controllers\Api\ExpenseGroupController;
+use App\Http\Controllers\Api\FeeItemMonthController;
+use App\Http\Controllers\Api\SubjectGroupController;
 use App\Http\Controllers\Api\TransportFeeController;
-use App\Http\Controllers\Api\TransportInsuranceController;
-use App\Http\Controllers\Api\TransportPickupDropController;
-use App\Http\Controllers\Api\TransportPickupDropPointController;
+use App\Http\Controllers\Api\AcademicClassController;
+use App\Http\Controllers\Api\StudentIdCardController;
 use App\Http\Controllers\Api\TransportSlotController;
 use App\Http\Controllers\Api\TransportTeamController;
 use App\Http\Controllers\Api\TransportTypeController;
 use App\Http\Controllers\Api\TransportUserController;
-use App\Models\JourneyType;
+use App\Http\Controllers\Api\EducationBoardController;
+use App\Http\Controllers\Api\StudentSessionController;
+use App\Http\Controllers\Api\AcademicSessionController;
+use App\Http\Controllers\Api\FeeTemplateItemController;
+use App\Http\Controllers\Api\AcademicStandardController;
+use App\Http\Controllers\Api\TransportExpenseController;
+use App\Http\Controllers\Api\TransportDocumentController;
+use App\Http\Controllers\Api\TransportInsuranceController;
+use App\Http\Controllers\Api\TransportPickupDropController;
+use App\Http\Controllers\Api\TransportPickupDropPointController;
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
@@ -96,6 +97,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('fee_templates/clone/{id}', [FeeTemplateController::class,'clone']);
     Route::apiResource('fee_template_items', FeeTemplateItemController::class);
     Route::apiResource('fees', FeeController::class);
+    Route::put('fees/soft_delete/{id}', [FeeController::class,'softDelete']);
     Route::get('fees_by_student_session/{student_session}',[ FeeController::class,'FeesByStudentSession']);
 
 
@@ -130,6 +132,11 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('transport_pickup_drop_points',TransportPickupDropPointController::class);
     Route::apiResource('transport_pickup_drops',TransportPickupDropController::class);
     Route::apiResource('journey_types',JourneyTypeController::class);
+
+
+    #Reports
+    Route::get('daily_collection_report', [ReportController::class,'daily_collection_report']);
+    Route::get('monthly_fee_collection_report', [ReportController::class,'monthly_fee_collection_report']);
 
 
 

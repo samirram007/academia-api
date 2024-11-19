@@ -43,9 +43,11 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->nullable();
             $table->enum('address_type',AddressTypeEnum::labels())->default(AddressTypeEnum::default());
-            $table->string('address_line_1');
+            $table->string('house_no')->nullable();
+            $table->string('address_line_1')->nullable();
             $table->string('address_line_2')->nullable();
             $table->string('city')->nullable();
+            $table->string('village')->nullable();
             $table->string('post_office')->nullable();
             $table->string('rail_station')->nullable();
             $table->string('police_station')->nullable();
@@ -79,4 +81,3 @@ return new class extends Migration
 
     }
 };
-

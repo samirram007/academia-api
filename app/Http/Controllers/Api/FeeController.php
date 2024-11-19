@@ -22,9 +22,7 @@ class FeeController extends Controller
     {
         $message = [];
 
-        if (!$request->has('campus_id')) {
-            array_push($message, 'Please provide campus_id');
-        }
+
         if (!$request->has('academic_session_id')) {
             array_push($message, 'Please provide academic_session_id');
         }
@@ -51,7 +49,6 @@ class FeeController extends Controller
     }
     public function FeesByStudentSession(StudentSession $studentSession)
     {
-
 
         // $fees = Fee::with('fee_template', 'academic_session', 'student', 'academic_class', 'campus',
         //     'student_session', 'student_session.campus', 'student_session.academic_class',
@@ -111,6 +108,7 @@ class FeeController extends Controller
 
             $result = \DB::transaction(function () use ($request) {
                 $data = $request->validated();
+
                 if (in_array(strtolower($data['fee_no']), ['new', ''])) {
                     $data['fee_no'] = $this->GetFeeNo($data['academic_session_id']);
                 }
@@ -134,7 +132,7 @@ class FeeController extends Controller
                     $fee_item->total_amount = $feeItem['total_amount'];
 
                     $fee_item->save();
-
+                    // dd($feeItem);
                     if ($feeItem['keep_periodic_details']) {
 
                         $fee_item_months = FeeItemMonth::where('student_session_id', $data['student_session_id'])
@@ -151,16 +149,16 @@ class FeeController extends Controller
                         }
 
                         $fee_item->fee_item_months()->createMany($feeItem['fee_item_months']);
+
                         $this->check_reset_item_months($data['student_session_id']);
+
                     }
+
                 }
+
                 return $fee;
             });
             return new FeeResource($result);
-            //    return response()->json([
-            //     'success' => true,
-            //     'data' => $result
-            // ], 201);
 
         } catch (\Exception $e) {
             // If any exception occurs, transaction will be rolled back
@@ -171,7 +169,7 @@ class FeeController extends Controller
         }
 
     }
-    public function GetFeeNo($academic_session_id)
+    private function GetFeeNo($academic_session_id)
     {
         $countFees = Fee::where('academic_session_id', $academic_session_id)
             ->latest('fee_no')
@@ -278,6 +276,9 @@ class FeeController extends Controller
             ->orderBy('fee_date', 'asc')->get();
         foreach ($fees as $key => $fee) {
             $feeItem = $fee->fee_items->where('keep_periodic_details', 1)->where('is_deleted', 0)->first();
+            if (!$feeItem) {
+                continue;
+            }
 
             for ($i = 0; $i < $feeItem->quantity; $i++) {
 
@@ -298,8 +299,6 @@ class FeeController extends Controller
             }
         }
 
-
-
     }
 
     /**
@@ -307,18 +306,44 @@ class FeeController extends Controller
      */
     public function destroy(Fee $fee)
     {
+       // return new FeeResource($fee);
         try {
 
-           $result = \DB::transaction(function () use ($fee) {
+            $result = \DB::transaction(function () use ($fee) {
 
                 $fee->fee_items()->update(['is_deleted' => 1]);
                 $fee->fee_item_months()->update(['is_deleted' => 1]);
-                $fee->update(['is_deleted' => 1,'note'=>'Having deleted fee.']);
+                $fee->update(['is_deleted' => 1, 'note' => 'Having deleted fee.']);
 
                 $this->check_reset_item_months($fee->student_session_id);
                 return $fee;
-           });
-           return new FeeResource($result);
+            });
+            return new FeeResource($result);
+        } catch (\Exception $e) {
+            // If any exception occurs, transaction will be rolled back
+            return response()->json([
+                'success' => false,
+                'message' => 'Error occurred: ' . $e->getMessage(),
+            ], 500);
+        }
+        // $fee->delete();
+        // return response(null, 204);
+    }
+    public function softDelete(Fee $fee)
+    {
+        try {
+
+
+            $result = \DB::transaction(function () use ($fee) {
+
+                $fee->fee_items()->update(['is_deleted' => 1]);
+                $fee->fee_item_months()->update(['is_deleted' => 1]);
+                $fee->update(['is_deleted' => 1, 'note' => 'Having deleted fee.']);
+
+                $this->check_reset_item_months($fee->student_session_id);
+                return $fee;
+            });
+            return new FeeResource($result);
         } catch (\Exception $e) {
             // If any exception occurs, transaction will be rolled back
             return response()->json([
