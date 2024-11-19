@@ -41,6 +41,7 @@ class AuthController extends Controller
         }
 
         // $user = User::find($credentials);
+        //
         /** @var \App\Models\User $user */
         $user = Auth::user();
         $token = $user->createToken('myApp')->accessToken;
