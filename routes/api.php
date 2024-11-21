@@ -53,6 +53,7 @@ use App\Http\Controllers\Api\TransportDocumentController;
 use App\Http\Controllers\Api\TransportInsuranceController;
 use App\Http\Controllers\Api\TransportPickupDropController;
 use App\Http\Controllers\Api\TransportPickupDropPointController;
+use App\Http\Controllers\Api\ExaminationTypeController;
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
@@ -137,6 +138,11 @@ Route::middleware('auth:api')->group(function () {
     #Reports
     Route::get('daily_collection_report', [ReportController::class,'daily_collection_report']);
     Route::get('monthly_fee_collection_report', [ReportController::class,'monthly_fee_collection_report']);
+
+    #Examination rotues
+
+    //Eaxmination Type routes
+    Route::apiResource('examination_types',ExaminationTypeController::class);
 
 
 
