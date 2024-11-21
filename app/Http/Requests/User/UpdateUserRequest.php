@@ -34,7 +34,7 @@ class UpdateUserRequest extends FormRequest
 
             'name' => 'sometimes|string|max:255',
             'user_type' => ['sometimes', 'required', Rule::in(UserTypeEnum::cases())],
-            'username' => 'sometimes|string|unique:users,username,' . $this->route('user')->id,
+            'username' => 'sometimes|string|unique:users,username,' . $this->route()->user,
             'email' => 'sometimes|email',
             'code' => 'sometimes|string|max:50|unique:users,code',
             'contact_no' => 'sometimes|required|max:10',
@@ -64,10 +64,12 @@ class UpdateUserRequest extends FormRequest
             'bank_account_no' => 'sometimes|required|string|max:20',
             'bank_ifsc' => 'sometimes|required|string|max:20',
             'bank_branch' => 'sometimes|required|string|max:100',
-            'bank_branch' => 'sometimes|required|string|max:100',
             'campus_id'=>'sometimes|nullable|exists:campuses,id',
             'admission_no'=>'sometimes|nullable',
-            'admission_date'=>'sometimes|required|date'
+            'admission_date'=>'sometimes|required|date',
+            'occupation'=>'sometimes|nullable',
+            'education'=>'sometimes|nullable',
+            'earnings'=>'sometimes|nullable',
         ];
     }
     protected function prepareForValidation()

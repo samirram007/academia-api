@@ -2,18 +2,19 @@
 
 namespace App\Services;
 
-use App\Http\Requests\Document\StoreDocumentRequest;
-use App\Http\Requests\Document\StoreImageFolderMapperRequest;
-use App\Http\Requests\Document\UpdateDocumentRequest;
-use App\Http\Resources\Document\DocumentCollection;
-use App\Http\Resources\Document\DocumentResource;
 use App\Models\Document;
-use App\Models\DocumentsFolder;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\DocumentsFolder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
+use App\Http\Resources\Document\DocumentResource;
+use App\Http\Resources\Document\DocumentCollection;
+use App\Http\Requests\Document\StoreDocumentRequest;
+use App\Http\Requests\Document\UpdateDocumentRequest;
+use App\Http\Requests\Document\StoreImageFolderMapperRequest;
 
 class DocumentService
 {
@@ -25,7 +26,7 @@ class DocumentService
         $files = $validatedData['files'];
         if (Auth::check()) {
             $userId = Auth::user()->id;
-            \DB::transaction(function () use ($files, $userId) {
+             DB::transaction(function () use ($files, $userId) {
                 foreach ($files as $key => $file) {
 
                     $mimeToTypeMap = [

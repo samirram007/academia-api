@@ -3,15 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\StoreGuardianRequest;
 use App\Http\Requests\User\StoreUserRequest;
+use App\Http\Requests\User\UpdateGuardianRequest;
+use App\Http\Resources\Guardian\GuardianResource;
 use App\Http\Resources\User\UserCollection;
 use App\Http\Resources\User\UserResource;
+use App\Models\StudentGuardian;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class GuardianController extends Controller
 {
-    protected $userLoader=['address','address.state','address.country', 'addresses', 'addresses.state','addresses.country','designation','department','profile_document','guardians'];
+    protected $userLoader=['designation','department','profile_document'];
     public function index(Request $request)
     {
         //dd($request->has('user_type') );
@@ -30,11 +34,17 @@ class GuardianController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserRequest $request)
+    public function store(StoreGuardianRequest $request)
     {
         $data = $request->validated();
-        //  dd($data);
+
         $user = User::create($data);
+        if($user){
+            $studentGuardian= new StudentGuardian();
+            $studentGuardian->guardian_id=$user->id;
+            $studentGuardian->student_id=$request->student_id;
+            $studentGuardian->save();
+        }
        // dd($data,$user);
         return new UserResource($user);
     }
@@ -50,9 +60,13 @@ class GuardianController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateGuardianRequest $request, $id)
     {
-        //
+
+        $data = $request->validated();
+        $user = User::find($id);
+        $user->update($data);
+        return new GuardianResource($user);
     }
 
     /**

@@ -67,6 +67,7 @@ return new class extends Migration
             $table->date('admission_date')->nullable();
             $table->string('education',255)->nullable();
             $table->string('occupation',255)->nullable();
+            $table->string('earnings',255)->nullable();
             $table->unsignedBigInteger('academic_session_id')->nullable();
             $table->unsignedBigInteger('campus_id')->nullable();
             $table->unsignedBigInteger('academic_class_id')->nullable();

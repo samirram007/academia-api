@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class StudentGuardian extends Pivot
 {
     protected $table = 'student_guardian';
-
+    public $incrementing = true;
     protected $fillable = [
-        'student_id', 'guardian_id',
+        'id','student_id', 'guardian_id',
         // Add any additional fillable columns here
     ];
 

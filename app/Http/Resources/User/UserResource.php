@@ -10,6 +10,7 @@ use App\Http\Resources\Address\AddressResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Address\AddressCollection;
 use App\Http\Resources\Document\DocumentResource;
+use App\Http\Resources\Guardian\GuardianCollection;
 
 class UserResource extends SuccessResource
 {
@@ -48,7 +49,6 @@ class UserResource extends SuccessResource
             'address_id'=>$this->whenNotNull($this->address_id),
             'designation_id'=>$this->whenNotNull($this->designation_id),
             'department_id'=>$this->whenNotNull($this->department_id),
-            'gender'=>$this->whenNotNull($this->gender),
             'doj'=>$this->whenNotNull($this->doj),
             'dob'=>$this->whenNotNull($this->dob),
             'aadhaar_no'=>$this->whenNotNull($this->aadhaar_no),
@@ -65,9 +65,10 @@ class UserResource extends SuccessResource
             'campus_id'=>$this->whenNotNull($this->campus_id),
             'academic_session_id'=>$this->whenNotNull($this->academic_session_id),
             'academic_class_id'=>$this->whenNotNull($this->academic_class_id),
-            'guardians'=>new UserCollection($this->whenLoaded('guardians')),
+            'guardians'=>new GuardianCollection($this->whenLoaded('guardians')),
             'education'=>$this->whenNotNull($this->education),
-            'occupation'=>$this->whenNotNull($this->occupation)
+            'occupation'=>$this->whenNotNull($this->occupation),
+            'earnings'=>$this->whenNotNull($this->occupation)
         ];
 
 

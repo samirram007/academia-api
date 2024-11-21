@@ -38,7 +38,7 @@ class PromotionController extends Controller
                 , 400);
         }
         if ($request->has('section_id') && $request->input('section_id')) {
-             $thisLoader = ['academic_session', 'academic_class', 'campus', 'address', 'address.state', 'address.country', 'addresses', 'addresses.state', 'addresses.country',
+             $thisLoader = ['academic_session', 'academic_class', 'campus',
             'designation', 'department', 'profile_document', 'guardians',
             'student_sessions' => function ($query) use ($request) {
                 $query->with([
@@ -65,7 +65,8 @@ class PromotionController extends Controller
             return new StudentCollection($users);
         }
 
-        $thisLoader = ['academic_session', 'academic_class', 'campus', 'address', 'address.state', 'address.country', 'addresses', 'addresses.state', 'addresses.country',
+        $thisLoader = ['academic_session', 'academic_class', 'campus',
+
         'designation', 'department', 'profile_document', 'guardians',
         'student_sessions' => function ($query) use ($request) {
             $query->with([

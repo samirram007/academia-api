@@ -11,6 +11,7 @@ use App\Models\Document;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Passport\HasApiTokens;
 
@@ -38,7 +39,7 @@ class User extends Authenticatable
         'medical_conditions',
         'allergies',
         'nationality',
-        'gurdian_type',
+        'guardian_type',
         'department_id',
         'designation_id',
         'gender',
@@ -63,7 +64,8 @@ class User extends Authenticatable
         'admission_no',
         'admission_date',
         'education',
-        'occupation'
+        'occupation',
+        'earnings'
 
     ];
 
@@ -157,7 +159,7 @@ class User extends Authenticatable
             $username = $user->username ?? Str::slug(static::setUnAttribute($user->attributes['name']));
             $user->attributes['username'] = $username;
             $user->attributes['user_type'] = $user->user_type ?? 'student';
-            $user->attributes['password'] = $user->password ?? 'password';
+            $user->attributes['password'] = $user->password ?? Hash::make('password');
 
         });
     }

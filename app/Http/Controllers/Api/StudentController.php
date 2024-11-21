@@ -26,12 +26,17 @@ class StudentController extends Controller
                 'designation',
                 'department',
                 'profile_document',
-                'guardians',
+                'guardians'=> function ($query) {
+                    $query-> where('guardian_type', '!=',null)
+                    ->where('user_type','=','guardian');
+                },
                 'student_sessions' => function ($query) {
-                    $query->with([
+                    $query->  where('academic_session_id', '!=', 0)
+                    ->  where('academic_session_id', '!=',null)
+                    ->with([
                         'campus',
                         'academic_class',
-                        'academic_session',
+                        'academic_session' ,
                         'section',
                         'fee_item_months' => function ($query) {
                             $query->where('is_deleted', '!=', 1)
@@ -88,7 +93,7 @@ class StudentController extends Controller
                     ->where('academic_class_id', $request->input('academic_class_id'))
                     ->whereNotIn('id', function ($query) use ($request) {
                         $query->select('student_id')
-                            ->from('student_sessions');
+                            ->from('student_sessions') ;
                     })->get();
                 return new StudentCollection($users);
             }
@@ -98,7 +103,7 @@ class StudentController extends Controller
                     ->where('academic_session_id', $request->input('academic_session_id'))
                     ->whereNotIn('id', function ($query) use ($request) {
                         $query->select('student_id')
-                            ->from('student_sessions');
+                            ->from('student_sessions') ;
                     })->get();
                 return new StudentCollection($users);
             }
@@ -106,7 +111,9 @@ class StudentController extends Controller
                 ->where('user_type', 'student')
                 ->whereNotIn('id', function ($query) use ($request) {
                     $query->select('student_id')
-                        ->from('student_sessions');
+                        ->from('student_sessions')
+                        ->where('academic_session_id','!=',0)
+                        ->where('academic_session_id','!=',null);
                 })->get();
             return new StudentCollection($users);
         } else {

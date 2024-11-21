@@ -68,12 +68,12 @@ class StoreStudentRequest extends FormRequest
             'bank_account_no'=>'sometimes|required|string|max:20',
             'bank_ifsc'=>'sometimes|required|string|max:20',
             'bank_branch'=>'sometimes|required|string|max:100',
-            'bank_branch'=>'sometimes|required|string|max:100',
             'admission_no'=>'sometimes|nullable',
             'admission_date'=>'sometimes|required|date',
             'campus_id'=>'sometimes|nullable|exists:campuses,id',
             'academic_session_id'=>'sometimes|nullable|exists:academic_sessions,id',
             'academic_class_id'=>'sometimes|nullable|exists:academic_classes,id',
+
         ];
 
        throw_if(!$validator,GeneralJsonException::class);
