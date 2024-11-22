@@ -48,6 +48,10 @@ use App\Http\Controllers\Api\StudentSessionController;
 use App\Http\Controllers\Api\AcademicSessionController;
 use App\Http\Controllers\Api\FeeTemplateItemController;
 use App\Http\Controllers\Api\AcademicStandardController;
+use App\Http\Controllers\api\ExaminationController;
+use App\Http\Controllers\api\ExaminationResultController;
+use App\Http\Controllers\api\ExaminationScheduleController;
+use App\Http\Controllers\api\ExaminationStandardController;
 use App\Http\Controllers\Api\TransportExpenseController;
 use App\Http\Controllers\Api\TransportDocumentController;
 use App\Http\Controllers\Api\TransportInsuranceController;
@@ -143,6 +147,18 @@ Route::middleware('auth:api')->group(function () {
 
     //Eaxmination Type routes
     Route::apiResource('examination_types',ExaminationTypeController::class);
+
+    //Examination Standard Routes
+    Route::apiResource('examination_standard',ExaminationStandardController::class);
+
+    Route::apiResource('examination',ExaminationController::class);
+
+
+    Route::apiResource('examination_schedule',ExaminationScheduleController::class);
+
+
+    //Examination Result
+    Route::apiResource('examination_result',ExaminationResultController::class);
 
 
 

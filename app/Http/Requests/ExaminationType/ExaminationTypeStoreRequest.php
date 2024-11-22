@@ -22,8 +22,8 @@ class ExaminationTypeStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'is_promotional_exam' => 'required|boolean'
+            'name' => ['required','string','max:255'],
+            'is_promotional_exam' => ['required','boolean']
         ];
     }
 }

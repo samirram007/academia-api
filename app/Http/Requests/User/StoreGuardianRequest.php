@@ -10,6 +10,7 @@ use App\Enums\NationalityEnum;
 use App\Enums\ReligionEnum;
 use App\Enums\UserStatusEnum;
 use App\Enums\UserTypeEnum;
+use App\Exceptions\GeneralJsonException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

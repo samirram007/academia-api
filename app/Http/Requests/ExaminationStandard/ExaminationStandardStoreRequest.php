@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\ExaminationType;
+namespace App\Http\Requests\ExaminationStandard;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ExaminationTypeUpdateRequest extends FormRequest
+class ExaminationStandardStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,8 @@ class ExaminationTypeUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'examination_type_id'=>['required','exists:examination_types,id'],
-            'name'=> ['required','string','max:255']
+            'academic_standard_id'=> ['required','numeric'],
+            'examination_id'=>['required','numeric']
         ];
     }
 }

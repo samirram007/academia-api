@@ -21,6 +21,13 @@ class ExaminationStoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [];
+        return [
+            'name'=>['required','string','max:255'],
+            'examination_types_id'=> ['required','numeric'],
+            'examination_start_date'=> ['required','date'],
+            'examination_end_date'=>['required','date'],
+            'academic_session_id' => ['required','numeric'],
+            'campus_id'=> ['required','numeric']
+        ];
     }
 }
