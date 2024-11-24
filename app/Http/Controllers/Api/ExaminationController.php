@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 
 class ExaminationController extends Controller
 {
-    protected $userLoader=['examination_type','academic_session','campus'];
+    protected $userLoader=['examination_types','academic_session','campus'];
     /**
      * Display a listing of the resource.
      */

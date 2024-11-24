@@ -20,7 +20,7 @@ class ExaminationResource extends SuccessResource
         return [
             'id'=> $this->id,
             'name'=>$this->name,
-            'examination_type'=>new ExaminationTypeResource($this->whenLoaded('examination_type')),
+            'examination_type'=>new ExaminationTypeResource($this->whenLoaded('examination_types')),
             'examination_start_date'=> $this->examination_start_date,
             'examination_end_date'=> $this->examination_end_date,
             'academic_session'=> new AcademicSessionResource($this->whenLoaded('academic_session')),

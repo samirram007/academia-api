@@ -19,7 +19,7 @@ class Examination extends Model
     ];
 
 
-    public function examination_type()
+    public function examination_types()
     {
         return $this->belongsTo(ExaminationType::class);
     }
