@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('examination_types', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->boolean('is_promotional_exam');
             $table->timestamps();
         });
     }

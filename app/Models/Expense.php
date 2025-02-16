@@ -11,15 +11,16 @@ class Expense extends Model
     use HasApiTokens,HasFactory;
     protected $fillable = [
         'expense_no',
+        'voucher_no',
         'expense_date',
         'expense_template_id',
         'user_id',
         'academic_session_id',
-        'campus_id',
         'total_amount',
         'paid_amount',
         'balance_amount',
         'payment_mode',
+        'narration',
 
     ];
     protected $hidden = [
@@ -33,9 +34,7 @@ class Expense extends Model
     public function academic_session() {
         return $this->belongsTo(AcademicSession::class);
     }
-    public function campus() {
-        return $this->belongsTo(Campus::class);
-    }
+
 
 
 

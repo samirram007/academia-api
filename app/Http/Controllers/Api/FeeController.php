@@ -172,8 +172,9 @@ class FeeController extends Controller
     private function GetFeeNo($academic_session_id)
     {
         $countFees = Fee::where('academic_session_id', $academic_session_id)
-            ->latest('fee_no')
+            ->orderByRaw('CONVERT(fee_no, UNSIGNED) DESC')
             ->first();
+
         return $countFees ? $countFees->fee_no + 1 : 1;
 
     }

@@ -48,17 +48,22 @@ use App\Http\Controllers\Api\StudentSessionController;
 use App\Http\Controllers\Api\AcademicSessionController;
 use App\Http\Controllers\Api\FeeTemplateItemController;
 use App\Http\Controllers\Api\AcademicStandardController;
-use App\Http\Controllers\Api\TransportExpenseController;
-use App\Http\Controllers\Api\TransportDocumentController;
-use App\Http\Controllers\Api\TransportInsuranceController;
-use App\Http\Controllers\Api\TransportPickupDropController;
-use App\Http\Controllers\Api\TransportPickupDropPointController;
+use App\Http\Controllers\api\ExaminationController;
+use App\Http\Controllers\api\ExaminationResultController;
+use App\Http\Controllers\api\ExaminationScheduleController;
+use App\Http\Controllers\api\ExaminationStandardController;
+use App\Http\Controllers\Api\ExaminationTypeController;
+// use App\Http\Controllers\Api\TransportExpenseController;
+// use App\Http\Controllers\Api\TransportDocumentController;
+// use App\Http\Controllers\Api\TransportInsuranceController;
+// use App\Http\Controllers\Api\TransportPickupDropController;
+// use App\Http\Controllers\Api\TransportPickupDropPointController;
 
-Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
+Route::post('auth/register', [AuthController::class, 'register']);
+Route::post('auth/login', [AuthController::class, 'login']);
 Route::middleware('auth:api')->group(function () {
     Route::get('user', [AuthController::class, 'user']);
-    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('auth/logout', [AuthController::class, 'logout']);
 
     Route::apiResource('users', UserController::class);
     Route::apiResource('students', StudentController::class);
@@ -138,7 +143,22 @@ Route::middleware('auth:api')->group(function () {
     Route::get('daily_collection_report', [ReportController::class,'daily_collection_report']);
     Route::get('monthly_fee_collection_report', [ReportController::class,'monthly_fee_collection_report']);
 
+    #Examination rotues
 
+    //Eaxmination Type routes
+    Route::apiResource('examination_types', ExaminationTypeController::class);
+
+    //Examination Standard Routes
+    Route::apiResource('examination_standard', ExaminationStandardController::class);
+
+    Route::apiResource('examination', ExaminationController::class);
+
+
+    Route::apiResource('examination_schedule', ExaminationScheduleController::class);
+
+
+    //Examination Result
+    Route::apiResource('examination_result', ExaminationResultController::class);
 
 });
 Route::get('/months', [MonthController::class, 'index']);

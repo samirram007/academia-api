@@ -32,6 +32,7 @@ class AuthController extends Controller
 
     }
     public function login(LoginRequest $request){
+
         $credentials = $request->validated();
         if (!Auth::attempt($credentials)) {
             return response([

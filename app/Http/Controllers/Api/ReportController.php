@@ -65,9 +65,9 @@ class ReportController extends Controller
         if (!$request->has('academic_session_id')) {
             array_push($message, 'Please provide academic_session_id');
         }
-        if (!$request->has('academic_class_id')) {
-            array_push($message, 'Please provide academic_class_id');
-        }
+        // if (!$request->has('academic_class_id')) {
+        //     array_push($message, 'Please provide academic_class_id');
+        // }
 
         if ($message) {
             return response()->json(
@@ -77,6 +77,7 @@ class ReportController extends Controller
                 ]
                 , 400);
         }
+
         $feesQuery = Fee::with([
             'fee_template', 'academic_session', 'student', 'academic_class', 'campus',
             'student_session', 'student_session.campus', 'student_session.academic_class',
@@ -84,9 +85,12 @@ class ReportController extends Controller
             'fee_items', 'fee_items.fee_head', 'fee_items.fee_item_months', 'fee_items.fee_item_months.month',
             'campus', 'campus.school', 'campus.school.address', 'campus.school.logo_image'
         ])
-        ->where('academic_session_id', $request->academic_session_id)
-        ->where('academic_class_id', $request->academic_class_id);
-
+        ->where('academic_session_id', $request->academic_session_id) ;
+        if ($request->has('academic_class_id')) {
+            $feesQuery->whereHas('student_session', function($query) use ($request) {
+                $query->where('academic_class_id', $request->academic_class_id);
+            });
+        }
         if ($request->has('section_id')) {
             $feesQuery->whereHas('student_session', function($query) use ($request) {
                 $query->where('section_id', $request->section_id);
@@ -140,7 +144,8 @@ class ReportController extends Controller
                     foreach ($students[$student->id]['months'] as &$monthData) {
                         if ($monthData['id'] == $monthId) {
                             // Populate month data for the fee items
-                            $monthData['fee_no'] = $fee->id;
+                            $monthData['fee_id'] = $fee->id;
+                            $monthData['fee_no'] = $fee->fee_no;
                             $monthData['fee_date'] = $fee->fee_date;
                             $monthData['amount'] = $itemMonth->amount;
                             break;

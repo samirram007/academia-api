@@ -2,10 +2,10 @@
 
 namespace App\Http\Resources\Examination;
 
+use App\Http\Resources\SuccessCollection;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ExaminationCollection extends ResourceCollection
+class ExaminationCollection extends SuccessCollection
 {
     /**
      * Transform the resource collection into an array.

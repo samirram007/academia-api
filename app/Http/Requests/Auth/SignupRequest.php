@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests\Auth;
 
-use App\Enums\UserTypeEnum;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Enums\UserTypeEnum;
 
 class SignupRequest extends FormRequest
 {

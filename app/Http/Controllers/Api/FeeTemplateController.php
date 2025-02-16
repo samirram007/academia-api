@@ -19,9 +19,7 @@ class FeeTemplateController extends Controller
 
     public function index(Request $request)
     {
-
-        $message=[];
-
+        $message = [];
         // if(!$request->has('academic_session_id')){
         //    array_push($message,'Please provide academic session');
         // }
