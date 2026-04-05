@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\api\ExaminationController;
+use App\Http\Controllers\api\ExaminationResultController;
+use App\Http\Controllers\api\ExaminationScheduleController;
+use App\Http\Controllers\api\ExaminationStandardController;
+use App\Http\Controllers\Api\ExaminationTypeController;
 use App\Models\JourneyType;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -25,44 +30,37 @@ use App\Http\Controllers\Api\BuildingController;
 use App\Http\Controllers\Api\DocumentController;
 use App\Http\Controllers\Api\GuardianController;
 use App\Http\Controllers\Api\PromotionController;
-use App\Http\Controllers\Api\TransportController;
+
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\SchoolTypeController;
 use App\Http\Controllers\Api\DesignationController;
 use App\Http\Controllers\Api\ExpenseHeadController;
 use App\Http\Controllers\Api\FeeTemplateController;
 use App\Http\Controllers\Api\IncomeGroupController;
-use App\Http\Controllers\Api\JourneyTypeController;
+
 use App\Http\Controllers\Api\ExpenseGroupController;
 use App\Http\Controllers\Api\FeeItemMonthController;
 use App\Http\Controllers\Api\SubjectGroupController;
-use App\Http\Controllers\Api\TransportFeeController;
+
 use App\Http\Controllers\Api\AcademicClassController;
 use App\Http\Controllers\Api\StudentIdCardController;
-use App\Http\Controllers\Api\TransportSlotController;
-use App\Http\Controllers\Api\TransportTeamController;
-use App\Http\Controllers\Api\TransportTypeController;
-use App\Http\Controllers\Api\TransportUserController;
+
 use App\Http\Controllers\Api\EducationBoardController;
 use App\Http\Controllers\Api\StudentSessionController;
 use App\Http\Controllers\Api\AcademicSessionController;
 use App\Http\Controllers\Api\FeeTemplateItemController;
 use App\Http\Controllers\Api\AcademicStandardController;
-use App\Http\Controllers\Api\TransportExpenseController;
-use App\Http\Controllers\Api\TransportDocumentController;
-use App\Http\Controllers\Api\TransportInsuranceController;
-use App\Http\Controllers\Api\TransportPickupDropController;
-use App\Http\Controllers\Api\TransportPickupDropPointController;
 
-Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
+
+Route::post('auth/register', [AuthController::class, 'register']);
+Route::post('auth/login', [AuthController::class, 'login']);
 Route::middleware('auth:api')->group(function () {
     Route::get('user', [AuthController::class, 'user']);
-    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('auth/logout', [AuthController::class, 'logout']);
 
     Route::apiResource('users', UserController::class);
     Route::apiResource('students', StudentController::class);
-    Route::apiResource('student_id_cards',StudentIdCardController::class);
+    Route::apiResource('student_id_cards', StudentIdCardController::class);
     Route::apiResource('guardians', GuardianController::class);
     Route::apiResource('teachers', TeacherController::class);
     Route::post('/documents', [DocumentController::class, 'store']);
@@ -94,11 +92,11 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('income_groups', IncomeGroupController::class);
     Route::apiResource('fee_heads', FeeHeadController::class);
     Route::apiResource('fee_templates', FeeTemplateController::class);
-    Route::post('fee_templates/clone/{id}', [FeeTemplateController::class,'clone']);
+    Route::post('fee_templates/clone/{id}', [FeeTemplateController::class, 'clone']);
     Route::apiResource('fee_template_items', FeeTemplateItemController::class);
     Route::apiResource('fees', FeeController::class);
-    Route::put('fees/soft_delete/{id}', [FeeController::class,'softDelete']);
-    Route::get('fees_by_student_session/{student_session}',[ FeeController::class,'FeesByStudentSession']);
+    Route::put('fees/soft_delete/{id}', [FeeController::class, 'softDelete']);
+    Route::get('fees_by_student_session/{student_session}', [FeeController::class, 'FeesByStudentSession']);
 
 
     Route::apiResource('expenses', ExpenseController::class);
@@ -106,39 +104,36 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('expense_heads', ExpenseHeadController::class);
 
 
-    Route::get('student_sessions_by_student_id/{student_id}', [StudentSessionController::class,'StudentSessionsByStudentId']);
-    Route::get('student_sessions', [StudentSessionController::class,'index']);
-    Route::get('student_sessions/{student_session}', [StudentSessionController::class,'show']);
-    Route::post('student_sessions', [StudentSessionController::class,'store']);
-    Route::get('student_sessions_generate_roll_no', [StudentSessionController::class,'generate_roll_no']);
+    Route::get('student_sessions_by_student_id/{student_id}', [StudentSessionController::class, 'StudentSessionsByStudentId']);
+    Route::get('student_sessions', [StudentSessionController::class, 'index']);
+    Route::get('student_sessions/{student_session}', [StudentSessionController::class, 'show']);
+    Route::post('student_sessions', [StudentSessionController::class, 'store']);
+    Route::get('student_sessions_generate_roll_no', [StudentSessionController::class, 'generate_roll_no']);
 
-    Route::post('student_sessions/enrollment', [StudentSessionController::class,'enrollment']);
-    Route::put('student_sessions/enrollment/{id}', [StudentSessionController::class,'enrollmentUpdate']);
-    Route::apiResource('promotions',PromotionController::class);
-    Route::apiResource('transports',TransportController::class);
-    Route::apiResource('transport_types',TransportTypeController::class);
-    Route::apiResource('transport_documents',TransportDocumentController::class);
-    Route::apiResource('transport_insurances',TransportInsuranceController::class);
-    Route::apiResource('transport_users',TransportUserController::class);
-    Route::get('search_users_for_transport',[TransportUserController::class,'search_users_for_transport']);
-    Route::get('search_transport_users_for_fees',[TransportUserController::class,'search_transport_users_for_fees']);
+    Route::post('student_sessions/enrollment', [StudentSessionController::class, 'enrollment']);
+    Route::put('student_sessions/enrollment/{id}', [StudentSessionController::class, 'enrollmentUpdate']);
+    Route::apiResource('promotions', PromotionController::class);
 
-    Route::apiResource('transport_teams',TransportTeamController::class);
-    Route::apiResource('transport_fees',TransportFeeController::class);
-    // Route::apiResource('transport_fee_items',TransportFeeItemController::class);
-    // Route::apiResource('transport_fee_item_months',TransportFeeItemMonthController::class);
-    Route::apiResource('transport_expenses',TransportExpenseController::class);
-    Route::apiResource('transport_slots',TransportSlotController::class);
-    Route::apiResource('transport_pickup_drop_points',TransportPickupDropPointController::class);
-    Route::apiResource('transport_pickup_drops',TransportPickupDropController::class);
-    Route::apiResource('journey_types',JourneyTypeController::class);
 
 
     #Reports
-    Route::get('daily_collection_report', [ReportController::class,'daily_collection_report']);
-    Route::get('monthly_fee_collection_report', [ReportController::class,'monthly_fee_collection_report']);
+    Route::get('daily_collection_report', [ReportController::class, 'daily_collection_report']);
+    Route::get('monthly_fee_collection_report', [ReportController::class, 'monthly_fee_collection_report']);
+    Route::get('exam_fees_collection_report', [ReportController::class, 'exam_fees_collection_report']);
+
+    Route::apiResource('examination_types', ExaminationTypeController::class);
+
+    //Examination Standard Routes
+    Route::apiResource('examination_standard', ExaminationStandardController::class);
+
+    Route::apiResource('examination', ExaminationController::class);
 
 
+    Route::apiResource('examination_schedule', ExaminationScheduleController::class);
+
+
+    //Examination Result
+    Route::apiResource('examination_result', ExaminationResultController::class);
 
 });
 Route::get('/months', [MonthController::class, 'index']);

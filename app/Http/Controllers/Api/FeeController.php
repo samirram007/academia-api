@@ -32,15 +32,34 @@ class FeeController extends Controller
                     'status' => false,
                     'message' => $message,
                 ]
-                , 400);
+                ,
+                400
+            );
         }
-        $fees = Fee::with('fee_template', 'academic_session', 'student', 'academic_class', 'campus',
-            'student_session', 'student_session.campus', 'student_session.academic_class',
-            'student_session.academic_session', 'student_session.section', 'student_session.fee_item_months',
+        $fees = Fee::with(
+            'fee_template',
+            'academic_session',
+            'student',
+            'academic_class',
+            'campus',
+            'student_session',
+            'student_session.campus',
+            'student_session.academic_class',
+            'student_session.academic_session',
+            'student_session.section',
+            'student_session.fee_item_months',
 
-            'fee_items', 'fee_items.fee_head', 'fee_items.fee_item_months', 'fee_items.fee_item_months.month',
-            'campus', 'campus.school', 'campus.school.address', 'campus.school.logo_image')
+            'fee_items',
+            'fee_items.fee_head',
+            'fee_items.fee_item_months',
+            'fee_items.fee_item_months.month',
+            'campus',
+            'campus.school',
+            'campus.school.address',
+            'campus.school.logo_image'
+        )
             ->where('academic_session_id', $request->academic_session_id)
+            ->where('is_deleted', '!=', 1)
             ->whereBetween('fee_date', [$request->input('from'), $request->input('to')])
             ->orderBy('id', 'desc')
             ->get();
@@ -82,9 +101,12 @@ class FeeController extends Controller
             },
             'fee_items' => function ($query) {
                 $query->where('is_deleted', '!=', 1)
-                    ->with(['fee_head', 'fee_item_months' => function ($query) {
-                        $query->where('is_deleted', '!=', 1)->with(['month']);
-                    }]);
+                    ->with([
+                        'fee_head',
+                        'fee_item_months' => function ($query) {
+                            $query->where('is_deleted', '!=', 1)->with(['month']);
+                        }
+                    ]);
             },
             'campus.school',
             'campus.school.address',
@@ -172,8 +194,9 @@ class FeeController extends Controller
     private function GetFeeNo($academic_session_id)
     {
         $countFees = Fee::where('academic_session_id', $academic_session_id)
-            ->latest('fee_no')
+            ->orderByRaw('CONVERT(fee_no, UNSIGNED) DESC')
             ->first();
+
         return $countFees ? $countFees->fee_no + 1 : 1;
 
     }
@@ -182,9 +205,18 @@ class FeeController extends Controller
      */
     public function show(Fee $fee)
     {
-        $fee = Fee::with('fee_template', 'academic_session', 'student', 'academic_class', 'campus',
-            'fee_items', 'fee_items.fee_head',
-            'campus.school', 'campus.school.address', 'campus.school.logo_image')->find($fee->id);
+        $fee = Fee::with(
+            'fee_template',
+            'academic_session',
+            'student',
+            'academic_class',
+            'campus',
+            'fee_items',
+            'fee_items.fee_head',
+            'campus.school',
+            'campus.school.address',
+            'campus.school.logo_image'
+        )->find($fee->id);
         return new FeeResource($fee);
     }
 
@@ -263,14 +295,20 @@ class FeeController extends Controller
     {
 
         $current_month_id = 1;
-        $fees = Fee::with(['fee_items' => function ($query) {
-            $query->where('is_deleted', '!=', 1)
-                ->with(['fee_head', 'fee_item_months' => function ($query) {
-                    $query->where('is_deleted', '!=', 1)->with(['month']);
-                }]);
-        }, 'fee_item_months' => function ($query) {
-            $query->where('is_deleted', '!=', 1)->with(['month']);
-        }])
+        $fees = Fee::with([
+            'fee_items' => function ($query) {
+                $query->where('is_deleted', '!=', 1)
+                    ->with([
+                        'fee_head',
+                        'fee_item_months' => function ($query) {
+                            $query->where('is_deleted', '!=', 1)->with(['month']);
+                        }
+                    ]);
+            },
+            'fee_item_months' => function ($query) {
+                $query->where('is_deleted', '!=', 1)->with(['month']);
+            }
+        ])
             ->where('student_session_id', $studentSessionId)
             ->where('is_deleted', '!=', 1)
             ->orderBy('fee_date', 'asc')->get();
@@ -306,7 +344,7 @@ class FeeController extends Controller
      */
     public function destroy(Fee $fee)
     {
-       // return new FeeResource($fee);
+        // return new FeeResource($fee);
         try {
 
             $result = \DB::transaction(function () use ($fee) {

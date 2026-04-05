@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Examination;
+namespace App\Http\Resources\ExaminationResult;
 
 use App\Http\Resources\SuccessCollection;
 use Illuminate\Http\Request;
 
-class ExaminationCollection extends SuccessCollection
+class ExaminationResultCollection extends SuccessCollection
 {
     /**
      * Transform the resource collection into an array.

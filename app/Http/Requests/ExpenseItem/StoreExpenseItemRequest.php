@@ -4,7 +4,7 @@ namespace App\Http\Requests\ExpenseItem;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreExpenseItemsRequest extends FormRequest
+class StoreExpenseItemRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

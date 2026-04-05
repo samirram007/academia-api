@@ -20,12 +20,28 @@ class ReportController extends Controller
     {
         $message = [];
 
-        $fees = Fee::with('fee_template', 'academic_session', 'student', 'academic_class', 'campus',
-            'student_session', 'student_session.campus', 'student_session.academic_class',
-            'student_session.academic_session', 'student_session.section', 'student_session.fee_item_months',
+        $fees = Fee::with(
+            'fee_template',
+            'academic_session',
+            'student',
+            'academic_class',
+            'campus',
+            'student_session',
+            'student_session.campus',
+            'student_session.academic_class',
+            'student_session.academic_session',
+            'student_session.section',
+            'student_session.fee_item_months',
 
-            'fee_items', 'fee_items.fee_head', 'fee_items.fee_item_months', 'fee_items.fee_item_months.month',
-            'campus', 'campus.school', 'campus.school.address', 'campus.school.logo_image')
+            'fee_items',
+            'fee_items.fee_head',
+            'fee_items.fee_item_months',
+            'fee_items.fee_item_months.month',
+            'campus',
+            'campus.school',
+            'campus.school.address',
+            'campus.school.logo_image'
+        )
             ->whereBetween('fee_date', [$request->input('from'), $request->input('to')])
             ->orderBy('id', 'desc')
             ->get();
@@ -65,9 +81,9 @@ class ReportController extends Controller
         if (!$request->has('academic_session_id')) {
             array_push($message, 'Please provide academic_session_id');
         }
-        if (!$request->has('academic_class_id')) {
-            array_push($message, 'Please provide academic_class_id');
-        }
+        // if (!$request->has('academic_class_id')) {
+        //     array_push($message, 'Please provide academic_class_id');
+        // }
 
         if ($message) {
             return response()->json(
@@ -75,24 +91,45 @@ class ReportController extends Controller
                     'status' => false,
                     'message' => $message,
                 ]
-                , 400);
+                ,
+                400
+            );
         }
-        $feesQuery = Fee::with([
-            'fee_template', 'academic_session', 'student', 'academic_class', 'campus',
-            'student_session', 'student_session.campus', 'student_session.academic_class',
-            'student_session.academic_session', 'student_session.section', 'student_session.fee_item_months',
-            'fee_items', 'fee_items.fee_head', 'fee_items.fee_item_months', 'fee_items.fee_item_months.month',
-            'campus', 'campus.school', 'campus.school.address', 'campus.school.logo_image'
-        ])
-        ->where('academic_session_id', $request->academic_session_id)
-        ->where('academic_class_id', $request->academic_class_id);
 
+        $feesQuery = Fee::with([
+            'fee_template',
+            'academic_session',
+            'student',
+            'academic_class',
+            'campus',
+            'student_session',
+            'student_session.campus',
+            'student_session.academic_class',
+            'student_session.academic_session',
+            'student_session.section',
+            'student_session.fee_item_months',
+            'fee_items',
+            'fee_items.fee_head',
+            'fee_items.fee_item_months',
+            'fee_items.fee_item_months.month',
+            'campus',
+            'campus.school',
+            'campus.school.address',
+            'campus.school.logo_image'
+        ])
+            ->where('academic_session_id', $request->academic_session_id)
+            ->where('is_deleted', '!=', 1); // Exclude soft-deleted fees;
+        if ($request->has('academic_class_id')) {
+            $feesQuery->whereHas('student_session', function ($query) use ($request) {
+                $query->where('academic_class_id', $request->academic_class_id);
+            });
+        }
         if ($request->has('section_id')) {
-            $feesQuery->whereHas('student_session', function($query) use ($request) {
+            $feesQuery->whereHas('student_session', function ($query) use ($request) {
                 $query->where('section_id', $request->section_id);
             });
         }
-        $fees=$feesQuery->get();
+        $fees = $feesQuery->get();
         // Fetch all months
         $months = Month::all();
 
@@ -140,7 +177,8 @@ class ReportController extends Controller
                     foreach ($students[$student->id]['months'] as &$monthData) {
                         if ($monthData['id'] == $monthId) {
                             // Populate month data for the fee items
-                            $monthData['fee_no'] = $fee->id;
+                            $monthData['fee_id'] = $fee->id;
+                            $monthData['fee_no'] = $fee->fee_no;
                             $monthData['fee_date'] = $fee->fee_date;
                             $monthData['amount'] = $itemMonth->amount;
                             break;
@@ -160,6 +198,118 @@ class ReportController extends Controller
         // Return the data in a JSON response
         return response()->json(['data' => $reportData]);
     }
+    public function exam_fees_collection_report(Request $request)
+    {
+        $message = [];
+
+        if (!$request->has('academic_session_id')) {
+            array_push($message, 'Please provide academic_session_id');
+        }
+        // if (!$request->has('academic_class_id')) {
+        //     array_push($message, 'Please provide academic_class_id');
+        // }
+
+        if ($message) {
+            return response()->json(
+                [
+                    'status' => false,
+                    'message' => $message,
+                ]
+                ,
+                400
+            );
+        }
+        // 'fee_template',
+        // 'academic_session',
+        // 'student',
+        // 'academic_class',
+        // 'campus',
+        // 'student_session',
+        // 'student_session.campus',
+        // 'student_session.academic_class',
+        // 'student_session.academic_session',
+        // 'student_session.section',
+        // 'fee_items',
+        $resource = [
+            'fee_items.fee_head',
+        ];
+
+        $feesQuery = Fee::with($resource)
+            ->where('academic_session_id', $request->academic_session_id)
+            ->where('is_deleted', '!=', 1); // Exclude soft-deleted fees;
+        if ($request->has('academic_class_id')) {
+            $feesQuery->whereHas('student_session', function ($query) use ($request) {
+                $query->where('academic_class_id', $request->academic_class_id);
+            });
+        }
+        if ($request->has('section_id')) {
+            $feesQuery->whereHas('student_session', function ($query) use ($request) {
+                $query->where('section_id', $request->section_id);
+            });
+        }
+        $fees = $feesQuery->get();
+        //dump('Total Fees Fetched: ' . $fees->count());
+
+        // Initialize the collection structure
+        $reportData = [];
+        $students = [];
+
+        foreach ($fees as $fee) {
+            $student = $fee->student;
+            $studentSession = $fee->student_session;
+            $feeItems = $fee->fee_items;
+            // dump(!array_key_exists($student->id, $students));
+
+            // Check if the student is already processed
+            if (!array_key_exists($student->id, $students)) {
+                if ($student->id === 11900 && $fee->id === 24952) {
+                    dump($feeItems->toArray());
+                }
+                // Initialize student data
+                $students[$student->id] = [
+                    'id' => $student->id,
+                    'class' => $studentSession->academic_class->name,
+                    'roll_no' => $studentSession->roll_no, // Assuming this is correct
+                    'section' => $studentSession->section->name, // Assuming this is correct
+                    'session' => $studentSession->academic_session->session, // Assuming this is correct
+                    'student_name' => $student->name,
+                    'examFees' => [], // Initialize months as an array
+                ];
+                // if ($student->id === 11900) {
+                //     dump($fee->toArray());
+                // }
+                // if feesItem has fee_head of type exam then populate examFees array
+
+            }
+            foreach ($feeItems as $item) {
+
+                // dump($item->fee_head_id);
+                if ($item->fee_head_id === 10383) {
+                    $students[$student->id]['examFees'][] = [
+                        'fee_id' => $fee->id,
+                        'fee_no' => $fee->fee_no,
+                        'fee_head_name' => $item->fee_head->name,
+                        'fee_date' => $fee->fee_date,
+                        'amount' => $item->total_amount,
+                    ];
+                }
+
+            }
+
+
+        }
+
+        // Convert the students associative array to an indexed array for JSON response
+        $reportData = array_values($students);
+        // order by roll_no
+        usort($reportData, function ($a, $b) {
+            return $a['roll_no'] <=> $b['roll_no'];
+        });
+
+        // Return the data in a JSON response
+        return response()->json(['data' => $reportData]);
+    }
+
     public function FeesByStudentSession(StudentSession $studentSession)
     {
 
@@ -195,9 +345,12 @@ class ReportController extends Controller
             },
             'fee_items' => function ($query) {
                 $query->where('is_deleted', '!=', 1)
-                    ->with(['fee_head', 'fee_item_months' => function ($query) {
-                        $query->where('is_deleted', '!=', 1)->with(['month']);
-                    }]);
+                    ->with([
+                        'fee_head',
+                        'fee_item_months' => function ($query) {
+                            $query->where('is_deleted', '!=', 1)->with(['month']);
+                        }
+                    ]);
             },
             'campus.school',
             'campus.school.address',
@@ -213,9 +366,18 @@ class ReportController extends Controller
 
     public function show(Fee $fee)
     {
-        $fee = Fee::with('fee_template', 'academic_session', 'student', 'academic_class', 'campus',
-            'fee_items', 'fee_items.fee_head',
-            'campus.school', 'campus.school.address', 'campus.school.logo_image')->find($fee->id);
+        $fee = Fee::with(
+            'fee_template',
+            'academic_session',
+            'student',
+            'academic_class',
+            'campus',
+            'fee_items',
+            'fee_items.fee_head',
+            'campus.school',
+            'campus.school.address',
+            'campus.school.logo_image'
+        )->find($fee->id);
         return new FeeResource($fee);
     }
 

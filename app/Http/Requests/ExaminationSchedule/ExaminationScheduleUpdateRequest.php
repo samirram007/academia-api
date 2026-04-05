@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\TransportExpenseItem;
+namespace App\Http\Requests\ExaminationSchedule;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTransportExpenseItemRequest extends FormRequest
+class ExaminationScheduleUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,11 +22,11 @@ class StoreTransportExpenseItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'transport_expense_id' => ['required', 'exists:transport_expenses,id'],
-            'expense_head_id'=> ['required', 'exists:expense_heads,id'],
-            'amount' => ['required', 'numeric'],
-            'quantity'=> ['sometimes','required', 'integer'],
-            'total_amount'=> ['sometimes','required', 'integer'],
+            'examination_standard_id'=> ['string','required'],
+            'subject_id'=> ['string','required'],
+            'examination_date'=> ['required','date'],
+            'examination_time'=> ['required','string'],
+            'teacher_id'=> ['required','numeric'],
         ];
     }
 }

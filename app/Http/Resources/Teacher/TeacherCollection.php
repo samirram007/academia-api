@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Resources\Examination;
+namespace App\Http\Resources\Teacher;
 
 use App\Http\Resources\SuccessCollection;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ExaminationCollection extends SuccessCollection
+class TeacherCollection extends SuccessCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -16,4 +17,5 @@ class ExaminationCollection extends SuccessCollection
     {
         return parent::toArray($request);
     }
+
 }

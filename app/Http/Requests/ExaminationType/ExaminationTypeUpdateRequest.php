@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\TransportExpenseItem;
+namespace App\Http\Requests\ExaminationType;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StoreTransportExpenseItemRequest extends FormRequest
+class ExaminationTypeUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,11 +23,14 @@ class StoreTransportExpenseItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'transport_expense_id' => ['required', 'exists:transport_expenses,id'],
-            'expense_head_id'=> ['required', 'exists:expense_heads,id'],
-            'amount' => ['required', 'numeric'],
-            'quantity'=> ['sometimes','required', 'integer'],
-            'total_amount'=> ['sometimes','required', 'integer'],
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('examination_types', 'name')->ignore($this->route('examination_type'))
+            ],
+
+            'is_promotional_exam' => ['required', 'boolean']
         ];
     }
 }
