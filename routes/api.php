@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\api\ExaminationController;
-use App\Http\Controllers\api\ExaminationResultController;
-use App\Http\Controllers\api\ExaminationScheduleController;
-use App\Http\Controllers\api\ExaminationStandardController;
+use App\Http\Controllers\Api\ExaminationController;
+use App\Http\Controllers\Api\ExaminationResultController;
+use App\Http\Controllers\Api\ExaminationScheduleController;
+use App\Http\Controllers\Api\ExaminationStandardController;
 use App\Http\Controllers\Api\ExaminationTypeController;
 use App\Models\JourneyType;
 use Illuminate\Support\Facades\Route;
@@ -128,6 +128,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('examination', ExaminationController::class);
 
+    #Examination routes
 
     Route::apiResource('examination_schedule', ExaminationScheduleController::class);
 

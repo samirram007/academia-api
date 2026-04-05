@@ -5,7 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Http\Request;
 
-class InvalidOrderException extends Exception
+class RecordsNotFoundException extends Exception
 {
 
     public function render($request){

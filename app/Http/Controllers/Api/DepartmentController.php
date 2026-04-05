@@ -17,7 +17,6 @@ class DepartmentController extends Controller
      */
     public function index(Request $request)
     {
-
         return new DepartmentCollection(Department::paginate());
     }
 
@@ -36,7 +35,6 @@ class DepartmentController extends Controller
      */
     public function show(Department $department)
     {
-
         return new DepartmentResource($department);
     }
 

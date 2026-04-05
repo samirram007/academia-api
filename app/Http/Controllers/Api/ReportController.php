@@ -118,7 +118,7 @@ class ReportController extends Controller
             'campus.school.logo_image'
         ])
             ->where('academic_session_id', $request->academic_session_id)
-            ->where('is_deleted', '!=', 1); // Exclude soft-deleted fees;
+            ->where('is_deleted', '!=', 1); // Exclude soft-deleted fees
         if ($request->has('academic_class_id')) {
             $feesQuery->whereHas('student_session', function ($query) use ($request) {
                 $query->where('academic_class_id', $request->academic_class_id);
